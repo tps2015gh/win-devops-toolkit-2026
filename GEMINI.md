@@ -1,6 +1,6 @@
 # GEMINI.md - Project Intelligence & Development Guide
 
-## Project Overview: `win_info` (dol_setup_server)
+## Project Overview: `win-audit-2026` (dol_setup_server)
 A specialized suite of Go-based audit and discovery tools designed for Windows Server and Windows 11 environments. The project provides high-fidelity system insights and XAMPP ecosystem analysis.
 
 ## Core Philosophy
