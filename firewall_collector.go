@@ -7,18 +7,19 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 )
 
 type FirewallRule struct {
-	DisplayName string `json:"DisplayName"`
-	Direction   string `json:"Direction"`
-	Action      string `json:"Action"`
-	Enabled     string `json:"Enabled"`
-	Protocol    string `json:"Protocol"`
-	LocalPort   string `json:"LocalPort"`
-	Program     string `json:"Program"`
+	DisplayName string      `json:"DisplayName"`
+	Direction   interface{} `json:"Direction"`
+	Action      interface{} `json:"Action"`
+	Enabled     interface{} `json:"Enabled"`
+	Protocol    interface{} `json:"Protocol"`
+	LocalPort   interface{} `json:"LocalPort"`
+	Program     interface{} `json:"Program"`
 }
 
 type FirewallResults struct {
@@ -26,15 +27,24 @@ type FirewallResults struct {
 	Rules      []FirewallRule `json:"rules"`
 }
 
+func toString(v interface{}) string {
+	if v == nil {
+		return ""
+	}
+	s := fmt.Sprintf("%v", v)
+	if s == "" || strings.Contains(s, "System.Object") || s == "[]" {
+		return ""
+	}
+	return s
+}
+
 func getFirewallRules() ([]FirewallRule, error) {
-	// Simple PowerShell command to fetch enabled rules as JSON
 	psCmd := "Get-NetFirewallRule -Enabled True | Select-Object DisplayName, Direction, Action, Enabled, @{Name='Protocol';Expression={($PSItem | Get-NetFirewallPortFilter).Protocol}}, @{Name='LocalPort';Expression={($PSItem | Get-NetFirewallPortFilter).LocalPort}}, @{Name='Program';Expression={($PSItem | Get-NetFirewallApplicationFilter).Program}} | ConvertTo-Json"
 	cmd := exec.Command("powershell", "-NoProfile", "-Command", psCmd)
 	
-	// Start progress indicator
 	done := make(chan bool)
 	go func() {
-		fmt.Print("Working")
+		fmt.Print("Filtering for Special Ports")
 		for {
 			select {
 			case <-done:
@@ -48,7 +58,7 @@ func getFirewallRules() ([]FirewallRule, error) {
 	}()
 
 	output, err := cmd.Output()
-	done <- true // Stop the progress indicator
+	done <- true
 	
 	if err != nil {
 		return []FirewallRule{}, nil
@@ -59,23 +69,34 @@ func getFirewallRules() ([]FirewallRule, error) {
 		return []FirewallRule{}, nil
 	}
 
-	var rules []FirewallRule
+	var allRules []FirewallRule
 	if strings.HasPrefix(trimmed, "[") {
-		_ = json.Unmarshal([]byte(trimmed), &rules)
+		_ = json.Unmarshal([]byte(trimmed), &allRules)
 	} else if strings.HasPrefix(trimmed, "{") {
 		var single FirewallRule
 		if err := json.Unmarshal([]byte(trimmed), &single); err == nil {
-			rules = append(rules, single)
+			allRules = append(allRules, single)
 		}
 	}
 
-	return rules, nil
+	// Filter: ONLY keep rules that have a numeric Port (e.g., "80", "443", "3306", "5000-5010")
+	// We use a regex to check for at least one digit in the Port field.
+	digitRegex := regexp.MustCompile(`\d`)
+	var filtered []FirewallRule
+	for _, r := range allRules {
+		port := toString(r.LocalPort)
+		if digitRegex.MatchString(port) {
+			filtered = append(filtered, r)
+		}
+	}
+
+	return filtered, nil
 }
 
 func main() {
-	fmt.Println("Analyzing Windows Firewall Rules (Enabled only)...")
-	fmt.Println("Fetching ports and programs. This may take 1-2 minutes...")
-
+	fmt.Println("Analyzing Specific Port Rules in Windows Firewall...")
+	fmt.Println("Filtering for rules with explicit port numbers.")
+	
 	rules, _ := getFirewallRules()
 
 	results := FirewallResults{
@@ -87,33 +108,40 @@ func main() {
 	_ = os.MkdirAll(outputDir, 0755)
 
 	var buf bytes.Buffer
-	buf.WriteString("=== Windows Firewall Active Rules Report ===\n")
-	buf.WriteString(fmt.Sprintf("Total Enabled Rules Found: %d\n\n", results.TotalRules))
+	buf.WriteString("=== Windows Firewall Port-Specific Rules Report ===\n")
+	buf.WriteString(fmt.Sprintf("Total Rules with Specific Ports: %d\n\n", results.TotalRules))
 	
 	format := "%-45s | %-10s | %-8s | %-10s | %-12s | %s\n"
 	buf.WriteString(fmt.Sprintf(format, "Display Name", "Direction", "Action", "Protocol", "Port", "Program/Path"))
 	buf.WriteString(strings.Repeat("-", 125) + "\n")
 
 	for _, r := range results.Rules {
-		// Clean up fields for display
-		port := r.LocalPort
-		if port == "" || strings.Contains(port, "System.Object") { port = "Any" }
-		proto := r.Protocol
-		if proto == "" || strings.Contains(proto, "System.Object") { proto = "Any" }
-		prog := r.Program
-		if prog == "" || strings.Contains(prog, "System.Object") { prog = "Any" }
+		dir := toString(r.Direction)
+		act := toString(r.Action)
+		proto := toString(r.Protocol)
+		port := toString(r.LocalPort)
+		prog := toString(r.Program)
+
+		if dir == "1" { dir = "Inbound" }
+		if dir == "2" { dir = "Outbound" }
+		if dir == "" { dir = "Any" }
+		
+		if act == "2" { act = "Allow" }
+		if act == "4" { act = "Block" }
+		if act == "" { act = "Any" }
+
+		if proto == "" { proto = "Any" }
+		if port == "" { port = "Any" }
+		if prog == "" { prog = "Any" }
 
 		name := r.DisplayName
 		if len(name) > 43 { name = name[:40] + "..." }
 
-		buf.WriteString(fmt.Sprintf(format, 
-			name, r.Direction, r.Action, proto, port, prog))
+		buf.WriteString(fmt.Sprintf(format, name, dir, act, proto, port, prog))
 	}
 
-	// Print to screen
 	fmt.Print(buf.String())
 
-	// Save files
 	jsonData, _ := json.MarshalIndent(results, "", "  ")
 	_ = os.WriteFile(filepath.Join(outputDir, "firewall_report.json"), jsonData, 0644)
 	_ = os.WriteFile(filepath.Join(outputDir, "firewall_report.txt"), buf.Bytes(), 0644)
