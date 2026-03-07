@@ -35,6 +35,12 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 - **Details:** Includes HotFixID (KB number), Description, Install Date, and InstalledBy info.
 - **Output:** Saves results in JSON and TXT formats for audit compliance.
 
+### 4. Windows Firewall Auditor (`firewall_collector.exe`)
+- **Discovery:** Scans and lists all active (Enabled) Windows Firewall rules.
+- **Details:** Provides protocol (TCP/UDP), local ports, action (Allow/Block), and the specific program path for each rule.
+- **Insight:** Helps identify open ports and factory-default vs. custom application rules.
+- **Output:** Saves results in JSON and TXT formats in `./output/`.
+
 ---
 
 ## 🛠️ Usage

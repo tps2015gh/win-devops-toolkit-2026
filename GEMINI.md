@@ -23,6 +23,10 @@ A specialized suite of Go-based audit and discovery tools designed for Windows S
   - Executes PowerShell `Get-HotFix` for precise update tracking.
   - Formats date strings for standardized JSON parsing.
   - **Output:** `./output/patch_report.{json,txt}`.
+- **`firewall_collector.go` (Firewall Auditor):**
+  - Uses `Get-NetFirewallRule` to map active rules to ports and programs.
+  - Handles complex object filtering for clean JSON output.
+  - **Output:** `./output/firewall_report.{json,txt}`.
 - **`build.bat`:** Centralized compilation script targeting `windows/amd64`.
 
 ## Development Direction
