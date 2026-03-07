@@ -1,4 +1,4 @@
-module dol_setup_server
+module abcd_setup_server
 
 go 1.21.1
 

@@ -1,6 +1,6 @@
 🌐 **Languages:** [English] | [**ภาษาไทย (Thai)**](./README.th.md)
 
-# win-audit-2026 (dol-setup-server)
+# win-audit-2026 (abcd-setup-server)
 
 A robust Go-based discovery and audit suite for Windows environments. This toolset is designed for system administrators and developers to quickly audit Windows Server/11 instances and XAMPP installations.
 
