@@ -1,6 +1,6 @@
 @echo off
 set /p username="Enter your GitHub username: "
-set repo_name=win_info
+set repo_name=win-autit-2026
 
 echo.
 echo Checking for existing remote...
