@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 type FirewallRule struct {
@@ -30,7 +31,25 @@ func getFirewallRules() ([]FirewallRule, error) {
 	psCmd := "Get-NetFirewallRule -Enabled True | Select-Object DisplayName, Direction, Action, Enabled, @{Name='Protocol';Expression={($PSItem | Get-NetFirewallPortFilter).Protocol}}, @{Name='LocalPort';Expression={($PSItem | Get-NetFirewallPortFilter).LocalPort}}, @{Name='Program';Expression={($PSItem | Get-NetFirewallApplicationFilter).Program}} | ConvertTo-Json"
 	cmd := exec.Command("powershell", "-NoProfile", "-Command", psCmd)
 	
+	// Start progress indicator
+	done := make(chan bool)
+	go func() {
+		fmt.Print("Working")
+		for {
+			select {
+			case <-done:
+				fmt.Println(" [Done]")
+				return
+			default:
+				fmt.Print(".")
+				time.Sleep(1 * time.Second)
+			}
+		}
+	}()
+
 	output, err := cmd.Output()
+	done <- true // Stop the progress indicator
+	
 	if err != nil {
 		return []FirewallRule{}, nil
 	}
@@ -55,7 +74,7 @@ func getFirewallRules() ([]FirewallRule, error) {
 
 func main() {
 	fmt.Println("Analyzing Windows Firewall Rules (Enabled only)...")
-	fmt.Println("This may take a moment to fetch ports and programs...")
+	fmt.Println("Fetching ports and programs. This may take 1-2 minutes...")
 
 	rules, _ := getFirewallRules()
 
