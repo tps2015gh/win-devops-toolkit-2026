@@ -19,6 +19,10 @@ A specialized suite of Go-based audit and discovery tools designed for Windows S
   - Recursively calculates directory sizes (Total vs. `htdocs`).
   - Probes binaries (`php.exe`, `mysql.exe`) for internal version strings (e.g., MariaDB versions).
   - **Output:** `./output/xampp_report.{json,txt}`.
+- **`patch_collector.go` (Patch Auditor):**
+  - Executes PowerShell `Get-HotFix` for precise update tracking.
+  - Formats date strings for standardized JSON parsing.
+  - **Output:** `./output/patch_report.{json,txt}`.
 - **`build.bat`:** Centralized compilation script targeting `windows/amd64`.
 
 ## Development Direction

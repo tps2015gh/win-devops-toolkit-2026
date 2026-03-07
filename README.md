@@ -30,6 +30,11 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 - **Version Auditing:** Extracts precise **PHP** and **MariaDB/MySQL** versions by directly querying the binaries.
 - **Output:** Saves results as structured JSON and human-readable TXT in `./output/`.
 
+### 3. Windows Patch Collector (`patch_collector.exe`)
+- **Audit:** Retrieves all installed Windows Updates and HotFixes using the PowerShell `Get-HotFix` cmdlet.
+- **Details:** Includes HotFixID (KB number), Description, Install Date, and InstalledBy info.
+- **Output:** Saves results in JSON and TXT formats for audit compliance.
+
 ---
 
 ## 🛠️ Usage
