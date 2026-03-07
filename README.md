@@ -4,8 +4,11 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 
 ---
 
-### 🤖 Human-AI Partnership
-This project was co-engineered through a direct collaboration between **tps2015gh** (Human Programmer) and **Gemini AI** (CLI Interactive Agent). This partnership combined human architectural vision and specialized requirements with AI's precision in implementation, testing, and documentation.
+### 👨‍💻 Author & Intelligent Assistant
+- **Lead Developer & Owner:** **tps2015gh** (Human)
+- **Intelligent Assistant:** **Gemini AI** (CLI Agent)
+
+**Legal Note on Authorship:** This project is authored and owned exclusively by **tps2015gh**. Gemini AI acted as a sophisticated development tool and intelligent assistant, providing implementation support and technical suggestions under the direct instruction and oversight of the project owner. All intellectual property, copyright, and final architectural decisions reside with the human author.
 
 ---
 
@@ -43,7 +46,7 @@ To compile the source code into standalone Windows executables:
 ---
 
 ## 📄 License
-This project is licensed under the **MIT License**—a permissive license that allows for commercial use, modification, and distribution with minimal restrictions. See the `LICENSE` file for full details.
+This project is licensed under the **MIT License**. The copyright holder and owner is **tps2015gh**. See the `LICENSE` file for full details.
 
 ---
-*Created with Gemini CLI - 2024*
+*Developed by tps2015gh with Gemini AI Assistance - 2024*
