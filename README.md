@@ -69,6 +69,14 @@ To compile the source code into standalone Windows executables:
 
 ---
 
+## 🏗️ Development Specifications
+- **Language:** Go (Golang)
+- **Compiler Version:** **Go 1.21.1** (Target: Windows/AMD64)
+- **Dependencies:** Uses WMI and Windows syscalls for high-fidelity discovery.
+- **Compatibility:** Optimized for Windows Server 2016, 2019, 2022, and Windows 10/11.
+
+---
+
 ## 📄 License
 This project is licensed under the **MIT License**. The copyright holder and owner is **tps2015gh**. See the `LICENSE` file for full details.
 

@@ -69,6 +69,14 @@
 
 ---
 
+## 🏗️ 开发规格 (Development Specifications)
+- **开发语言:** Go (Golang)
+- **编译器版本:** **Go 1.21.1** (目标平台: Windows/AMD64)
+- **依赖库:** 使用 WMI 和 Windows syscalls 进行高保真发现。
+- **兼容性:** 针对 Windows Server 2016、2019、2022 以及 Windows 10/11 进行优化。
+
+---
+
 ## 📄 许可证 (License)
 本项目采用 **MIT 许可证**。版权所有者为 **tps2015gh**。详情请参阅 `LICENSE` 文件。
 
