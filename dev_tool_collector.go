@@ -71,6 +71,8 @@ func main() {
 		{"Apache (httpd)", "httpd", []string{"-v"}},
 		{"Lighttpd", "lighttpd", []string{"-v"}},
 		{"Kong", "kong", []string{"version"}},
+		{"WSL", "wsl", []string{"--list", "--verbose"}},
+		{"Ubuntu (via WSL)", "wsl", []string{"-d", "Ubuntu", "grep", "PRETTY_NAME", "/etc/os-release"}},
 	}
 
 	var results []ToolInfo
