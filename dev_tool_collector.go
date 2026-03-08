@@ -25,6 +25,14 @@ type DevToolsReport struct {
 	Tools    []ToolInfo `json:"tools"`
 }
 
+func cleanOutput(b []byte) string {
+	s := string(b)
+	if strings.Contains(s, "\x00") {
+		return strings.ReplaceAll(s, "\x00", "")
+	}
+	return s
+}
+
 func main() {
 	fmt.Println("Development Tools Discovery Engine")
 	fmt.Println("==================================")
@@ -102,7 +110,8 @@ func main() {
 				
 				if err := cmd.Run(); err == nil {
 					info.Status = "Installed"
-					versionStr := strings.TrimSpace(out.String() + stderr.String())
+					versionStr := cleanOutput(out.Bytes()) + cleanOutput(stderr.Bytes())
+					versionStr = strings.TrimSpace(versionStr)
 					if versionStr != "" {
 						lines := strings.Split(versionStr, "\n")
 						info.Version = strings.TrimSpace(lines[0])
