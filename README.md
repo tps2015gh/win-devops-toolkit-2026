@@ -46,6 +46,12 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 - **Interactive Unarchive:** `unarchiver.exe` provides an interactive menu to select and extract ZIP files to auto-incrementing folders (`_unzip01`, `_unzip02`...).
 - **Details:** See the [**Archiver Documentation**](./README.archiver.md) for full usage instructions.
 
+### 6. MariaDB Database Manager (`db_manager.exe`)
+- **Backup/Restore:** Compressed SQL backups (`.sql.zip`) and easy restoration.
+- **Database Audit:** Lists all databases, tables, and provides stats on row counts and character encoding (Collation).
+- **Auto-Discovery:** Automatically detects MariaDB/MySQL paths in XAMPP or system environment.
+- **Details:** See the [**DB Manager Documentation**](./README.db.md) for full usage instructions.
+
 ---
 
 ## 🛠️ Usage
