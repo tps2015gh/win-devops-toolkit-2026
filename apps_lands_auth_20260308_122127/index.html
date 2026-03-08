@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบกำลังอัปเดต/ปรับปรุง กรุณารอสักครู่</title>
+  <style>
+    body {
+      background-color: orange;
+      color: blue;
+      font-size: 36px;
+    }
+    #content {
+      border: 5px solid blue;
+      box-shadow: 10px 10px 20px blue;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      background-color: red;
+      color: white;
+      font-size: 48px;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>ระบบกำลังอัปเดต/ปรับปรุง</h1>
+  <div id="content">
+    <p>กรุณารอสักครู่ เรากำลังทำการอัปเดต/ปรับปรุงแอพพลิเคชั่น</p>
+    <p>IP ของคุณคือ <?php echo $_SERVER['REMOTE_ADDR']; ?></p>
+    <p>เบราว์เซอร์ของคุณคือ <?php echo $_SERVER['HTTP_USER_AGENT']; ?></p>
+  </div>
+</body>
+</html>

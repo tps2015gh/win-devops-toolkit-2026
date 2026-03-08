@@ -17,6 +17,9 @@ go build -o firewall_collector.exe firewall_collector.go
 echo Compiling Archiver (archiver.go) to archiver.exe...
 go build -o archiver.exe archiver.go
 
+echo Compiling Unarchiver (unarchiver.go) to unarchiver.exe...
+go build -o unarchiver.exe unarchiver.go
+
 echo.
 if %ERRORLEVEL% EQU 0 (
     echo Build Successful!

@@ -19,6 +19,12 @@
 archiver.exe <folder_name>
 ```
 
+### Unarchive (Restore)
+To extract a ZIP file into the `_unzip` folder:
+```cmd
+unarchiver.exe <zip_file_name>
+```
+
 ---
 
 <a name="thai"></a>
@@ -36,6 +42,12 @@ archiver.exe <folder_name>
 archiver.exe <ชื่อโฟลเดอร์>
 ```
 
+### วิธีแตกไฟล์ (Restore)
+เพื่อแตกไฟล์ Zip ไปยังโฟลเดอร์ `_unzip`:
+```cmd
+unarchiver.exe <ชื่อไฟล์_zip>
+```
+
 ---
 
 <a name="chinese"></a>
@@ -51,6 +63,12 @@ archiver.exe <ชื่อโฟลเดอร์>
 ### 使用方法
 ```cmd
 archiver.exe <文件夹名称>
+```
+
+### 还原文件 (Restore)
+将 ZIP 文件解压到 `_unzip` 文件夹中：
+```cmd
+unarchiver.exe <zip_文件名>
 ```
 
 ---
