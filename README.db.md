@@ -10,8 +10,9 @@
 
 ### Features
 - **Auto-Discovery:** Searches for `mysql.exe` and `mysqldump.exe` in PATH and XAMPP folders.
-- **Interactive:** Select databases from a list.
-- **Secure-ish:** Accepts credentials in `user/pass` format without masking.
+- **Connection Test:** Automatically tests your `user/pass` and allows retrying if the connection fails.
+- **Database Audit:** List tables and view detailed stats (row counts & encoding/collation).
+- **Interactive:** Select databases from a list for backup or auditing.
 - **Compressed:** Backups are saved as `.sql.zip`.
 - **Easy Restore:** Select a `.sql.zip` file and restore it to any database name.
 
@@ -28,8 +29,9 @@ db_manager.exe
 
 ### คุณสมบัติ
 - **ค้นหาอัตโนมัติ:** ค้นหาไฟล์ `mysql.exe` และ `mysqldump.exe` ใน PATH และโฟลเดอร์ XAMPP โดยอัตโนมัติ
-- **โต้ตอบได้:** แสดงรายชื่อฐานข้อมูลให้เลือกก่อนสำรองข้อมูล
-- **รูปแบบรหัสผ่าน:** รองรับการใส่ชื่อผู้ใช้และรหัสผ่านในรูปแบบ `user/pass`
+- **ทดสอบการเชื่อมต่อ:** ทดสอบ `user/pass` ทันทีที่กรอก และเลือกกรอกใหม่ได้หากเชื่อมต่อล้มเหลว
+- **ตรวจสอบข้อมูล (Audit):** แสดงรายชื่อตาราง พร้อมสถิติจำนวนแถวและการเข้ารหัส (Encoding/Collation)
+- **โต้ตอบได้:** แสดงรายชื่อฐานข้อมูลให้เลือกก่อนสำรองข้อมูลหรือตรวจสอบข้อมูล
 - **ประหยัดพื้นที่:** ไฟล์สำรองข้อมูลจะถูกบีบอัดเป็น `.sql.zip`
 - **คืนค่าง่าย:** เลือกไฟล์ `.sql.zip` และระบุชื่อฐานข้อมูลที่ต้องการคืนค่าได้ทันที
 
@@ -46,8 +48,9 @@ db_manager.exe
 
 ### 功能特点
 - **自动发现:** 在 PATH 和 XAMPP 文件夹中自动搜索 `mysql.exe` 和 `mysqldump.exe`。
-- **交互式操作:** 从列表中选择要备份的数据库。
-- **简单凭据:** 接受 `user/pass` 格式的用户名和密码。
+- **连接测试:** 自动测试您的 `user/pass` 凭据，并在连接失败时允许重试。
+- **数据库审计:** 列出所有表并查看详细统计信息（行数和字符集编码/Collation）。
+- **交互式操作:** 从列表中选择要备份或审计的数据库。
 - **压缩备份:** 备份文件保存为 `.sql.zip`。
 - **快速还原:** 选择 `.sql.zip` 文件并将其还原到任何指定的数据库名称。
 
