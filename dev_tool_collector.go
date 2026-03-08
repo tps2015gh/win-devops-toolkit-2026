@@ -78,16 +78,14 @@ func main() {
 	var wg sync.WaitGroup
 
 	total := len(toolsToCheck)
-	fmt.Printf("Starting discovery for %d tools...
-", total)
+	fmt.Printf("Starting discovery for %d tools...\n", total)
 
 	for i, t := range toolsToCheck {
 		wg.Add(1)
 		go func(name, command string, args []string, index int) {
 			defer wg.Done()
 			
-			fmt.Printf("[%d/%d] Checking %s...
-", index+1, total, name)
+			fmt.Printf("[%d/%d] Checking %s...\n", index+1, total, name)
 
 			info := ToolInfo{Name: name, Status: "Not Found", Version: "N/A"}
 			
@@ -104,8 +102,7 @@ func main() {
 					info.Status = "Installed"
 					versionStr := strings.TrimSpace(out.String() + stderr.String())
 					if versionStr != "" {
-						lines := strings.Split(versionStr, "
-")
+						lines := strings.Split(versionStr, "\n")
 						info.Version = strings.TrimSpace(lines[0])
 					}
 				}
@@ -131,10 +128,8 @@ func main() {
 
 	saveHTMLReport(report, filepath.Join(outputDir, "dev_tools.html"))
 
-	fmt.Println("
-Discovery Complete!")
-	fmt.Printf("Report saved to %s/dev_tools.json and %s/dev_tools.html
-", outputDir, outputDir)
+	fmt.Println("\nDiscovery Complete!")
+	fmt.Printf("Report saved to %s/dev_tools.json and %s/dev_tools.html\n", outputDir, outputDir)
 }
 
 func checkAndroidStudio(results *[]ToolInfo) {
@@ -155,8 +150,7 @@ func checkAndroidStudio(results *[]ToolInfo) {
 }
 
 func saveHTMLReport(report DevToolsReport, filename string) {
-	const htmlTmpl = `
-<!DOCTYPE html>
+	const htmlTmpl = `<!DOCTYPE html>
 <html>
 <head>
     <title>Dev Tools Report</title>
