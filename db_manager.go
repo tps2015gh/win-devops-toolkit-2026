@@ -25,24 +25,34 @@ func main() {
 	// 1. Setup Binaries
 	setupBinaries()
 
-	// 2. Get Credentials
+	// 2. Get Credentials & 3. Test Connection
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Enter credentials (format: user/pass): ")
-	creds, _ := reader.ReadString('\n')
-	creds = strings.TrimSpace(creds)
+	var user, pass string
+	for {
+		fmt.Print("Enter credentials (format: user/pass): ")
+		creds, _ := reader.ReadString('\n')
+		creds = strings.TrimSpace(creds)
 
-	parts := strings.SplitN(creds, "/", 2)
-	user := "root"
-	pass := ""
-	if len(parts) == 2 {
-		user = parts[0]
-		pass = parts[1]
-	} else if len(parts) == 1 && parts[0] != "" {
-		user = parts[0]
+		parts := strings.SplitN(creds, "/", 2)
+		user = "root"
+		pass = ""
+		if len(parts) == 2 {
+			user = parts[0]
+			pass = parts[1]
+		} else if len(parts) == 1 && parts[0] != "" {
+			user = parts[0]
+		}
+
+		if testConnection(user, pass) {
+			break
+		}
+
+		fmt.Print("Would you like to try different credentials? (y/n): ")
+		retry, _ := reader.ReadString('\n')
+		if strings.ToLower(strings.TrimSpace(retry)) != "y" {
+			break
+		}
 	}
-
-	// 3. Test Connection
-	testConnection(user, pass)
 
 	for {
 		fmt.Println("\nChoose action:")
@@ -111,7 +121,7 @@ func setupBinaries() {
 	fmt.Printf("Using mysqldump: %s\n", mysqldumpPath)
 }
 
-func testConnection(user, pass string) {
+func testConnection(user, pass string) bool {
 	fmt.Printf("\nTesting connection for user '%s'...\n", user)
 	args := []string{"-u", user}
 	if pass != "" {
@@ -124,8 +134,10 @@ func testConnection(user, pass string) {
 	if err != nil {
 		fmt.Printf("[!] WARNING: Connection failed! Access denied or database server unreachable.\n")
 		fmt.Printf("    (Verify your credentials and ensure the MariaDB service is running)\n")
+		return false
 	} else {
 		fmt.Println("[+] Connection successful!")
+		return true
 	}
 }
 
