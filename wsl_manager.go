@@ -57,9 +57,10 @@ func main() {
 		fmt.Println("2. List Available Distros Online")
 		fmt.Println("3. Install New Distro (with Disk Check)")
 		fmt.Println("4. Remove (Unregister) Distro")
-		fmt.Println("5. System Disk Summary")
-		fmt.Println("6. Exit")
-		fmt.Print("Select (1-6): ")
+		fmt.Println("5. Login to Distro")
+		fmt.Println("6. System Disk Summary")
+		fmt.Println("7. Exit")
+		fmt.Print("Select (1-7): ")
 
 		choice, _ := reader.ReadString('\n')
 		choice = strings.TrimSpace(choice)
@@ -74,8 +75,10 @@ func main() {
 		case "4":
 			removeDistro(reader)
 		case "5":
-			showDiskSummary()
+			loginDistro(reader)
 		case "6":
+			showDiskSummary()
+		case "7":
 			return
 		default:
 			fmt.Println("Invalid selection.")
@@ -127,7 +130,8 @@ func installDistro(reader *bufio.Reader) {
 	fmt.Println("\nFetching available distributions...")
 	cmd := exec.Command("wsl", "--list", "--online")
 	out, _ := cmd.CombinedOutput()
-	lines := strings.Split(cleanOutput(out), "\n")
+	output := cleanOutput(out)
+	lines := strings.Split(output, "\n")
 	
 	var onlineDistros []string
 	for _, line := range lines {
@@ -189,42 +193,29 @@ func installDistro(reader *bufio.Reader) {
 }
 
 func removeDistro(reader *bufio.Reader) {
-	// Use --quiet for clean list of distribution names only
-	cmd := exec.Command("wsl", "--list", "--quiet")
-	out, _ := cmd.CombinedOutput()
-	lines := strings.Split(cleanOutput(out), "\n")
-	
-	var installedDistros []string
-	fmt.Println("\nSelect a distribution to REMOVE (WARNING: ALL DATA DELETED!):")
-	count := 1
-	for _, line := range lines {
-		name := strings.TrimSpace(line)
-		// Safety: Skip common non-distro words and headers
-		if name == "" || name == "Windows" || strings.Contains(name, "Distributions") || strings.Contains(name, "Default") {
-			continue
-		}
-		fmt.Printf("[%d] %s\n", count, name)
-		installedDistros = append(installedDistros, name)
-		count++
-	}
-
-	if len(installedDistros) == 0 {
+	distros := getInstalledDistros()
+	if len(distros) == 0 {
 		fmt.Println("No removable distributions found.")
 		return
 	}
 
-	fmt.Printf("\nEnter number to UNREGISTER (1-%d) or 'c' to cancel: ", len(installedDistros))
+	fmt.Println("\nSelect a distribution to REMOVE (WARNING: ALL DATA DELETED!):")
+	for i, d := range distros {
+		fmt.Printf("[%d] %s\n", i+1, d)
+	}
+
+	fmt.Printf("\nEnter number to UNREGISTER (1-%d) or 'c' to cancel: ", len(distros))
 	input, _ := reader.ReadString('\n')
 	input = strings.TrimSpace(input)
 	if input == "c" { return }
 	
 	idx, err := strconv.Atoi(input)
-	if err != nil || idx < 1 || idx > len(installedDistros) {
+	if err != nil || idx < 1 || idx > len(distros) {
 		fmt.Println("Invalid selection.")
 		return
 	}
 
-	selected := installedDistros[idx-1]
+	selected := distros[idx-1]
 	fmt.Printf("ARE YOU SURE you want to delete %s? (y/n): ", selected)
 	confirm, _ := reader.ReadString('\n')
 	if strings.ToLower(strings.TrimSpace(confirm)) != "y" { return }
@@ -233,6 +224,55 @@ func removeDistro(reader *bufio.Reader) {
 	removeCmd := exec.Command("wsl", "--unregister", selected)
 	removeCmd.Run()
 	fmt.Println("Removal complete.")
+}
+
+func loginDistro(reader *bufio.Reader) {
+	distros := getInstalledDistros()
+	if len(distros) == 0 {
+		fmt.Println("No distributions found to login.")
+		return
+	}
+
+	fmt.Println("\nSelect a distribution to login:")
+	for i, d := range distros {
+		fmt.Printf("[%d] %s\n", i+1, d)
+	}
+
+	fmt.Printf("\nEnter number to LOGIN (1-%d) or 'c' to cancel: ", len(distros))
+	input, _ := reader.ReadString('\n')
+	input = strings.TrimSpace(input)
+	if input == "c" { return }
+	
+	idx, err := strconv.Atoi(input)
+	if err != nil || idx < 1 || idx > len(distros) {
+		fmt.Println("Invalid selection.")
+		return
+	}
+
+	selected := distros[idx-1]
+	fmt.Printf("Logging into %s... (Type 'exit' to return to manager)\n", selected)
+	
+	cmd := exec.Command("wsl", "-d", selected)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Run()
+}
+
+func getInstalledDistros() []string {
+	cmd := exec.Command("wsl", "--list", "--quiet")
+	out, _ := cmd.CombinedOutput()
+	lines := strings.Split(cleanOutput(out), "\n")
+	
+	var distros []string
+	for _, line := range lines {
+		name := strings.TrimSpace(line)
+		if name == "" || name == "Windows" || strings.Contains(name, "Distributions") || strings.Contains(name, "Default") {
+			continue
+		}
+		distros = append(distros, name)
+	}
+	return distros
 }
 
 func showDiskSummary() {
