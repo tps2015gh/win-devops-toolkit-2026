@@ -19,8 +19,8 @@ var (
 )
 
 func main() {
-	fmt.Println("MariaDB Database Manager (Backup/Restore)")
-	fmt.Println("=========================================")
+	fmt.Println("MariaDB Database Manager (Backup/Restore/Audit)")
+	fmt.Println("==============================================")
 
 	// 1. Setup Binaries
 	setupBinaries()
@@ -45,8 +45,10 @@ func main() {
 		fmt.Println("\nChoose action:")
 		fmt.Println("1. List Databases & Backup")
 		fmt.Println("2. Restore from .sql.zip")
-		fmt.Println("3. Exit")
-		fmt.Print("Select (1-3): ")
+		fmt.Println("3. List Tables in a Database")
+		fmt.Println("4. List Tables with Stats (Rows & Encoding)")
+		fmt.Println("5. Exit")
+		fmt.Print("Select (1-5): ")
 
 		action, _ := reader.ReadString('\n')
 		action = strings.TrimSpace(action)
@@ -57,6 +59,10 @@ func main() {
 		case "2":
 			handleRestore(user, pass)
 		case "3":
+			handleListTables(user, pass)
+		case "4":
+			handleTableStats(user, pass)
+		case "5":
 			return
 		default:
 			fmt.Println("Invalid selection.")
@@ -65,11 +71,9 @@ func main() {
 }
 
 func setupBinaries() {
-	// Try standard PATH first
 	mysqlPath, _ = exec.LookPath("mysql.exe")
 	mysqldumpPath, _ = exec.LookPath("mysqldump.exe")
 
-	// If not in PATH, try common XAMPP paths
 	if mysqlPath == "" || mysqldumpPath == "" {
 		commonPaths := []string{
 			"C:\\xampp\\mysql\\bin",
@@ -104,11 +108,11 @@ func setupBinaries() {
 	fmt.Printf("Using mysqldump: %s\n", mysqldumpPath)
 }
 
-func handleBackup(user, pass string) {
+func selectDatabase(user, pass string) string {
 	dbs := listDatabases(user, pass)
 	if len(dbs) == 0 {
 		fmt.Println("No databases found or connection failed.")
-		return
+		return ""
 	}
 
 	fmt.Println("\nAvailable Databases:")
@@ -116,7 +120,7 @@ func handleBackup(user, pass string) {
 		fmt.Printf("[%d] %s\n", i+1, db)
 	}
 
-	fmt.Printf("\nEnter number to backup (1-%d): ", len(dbs))
+	fmt.Printf("\nSelect database (1-%d): ", len(dbs))
 	reader := bufio.NewReader(os.Stdin)
 	input, _ := reader.ReadString('\n')
 	idx := strings.TrimSpace(input)
@@ -124,11 +128,84 @@ func handleBackup(user, pass string) {
 	i, err := strconv.Atoi(idx)
 	if err != nil || i < 1 || i > len(dbs) {
 		fmt.Println("Invalid selection.")
+		return ""
+	}
+	return dbs[i-1]
+}
+
+func handleBackup(user, pass string) {
+	dbName := selectDatabase(user, pass)
+	if dbName != "" {
+		backupDB(dbName, user, pass)
+	}
+}
+
+func handleListTables(user, pass string) {
+	dbName := selectDatabase(user, pass)
+	if dbName == "" {
 		return
 	}
 
-	dbName := dbs[i-1]
-	backupDB(dbName, user, pass)
+	args := []string{"-u", user}
+	if pass != "" {
+		args = append(args, "-p"+pass)
+	}
+	args = append(args, dbName, "-e", "SHOW TABLES;")
+
+	cmd := exec.Command(mysqlPath, args...)
+	out, err := cmd.Output()
+	if err != nil {
+		fmt.Printf("Error listing tables: %v\n", err)
+		return
+	}
+
+	fmt.Printf("\nTables in %s:\n", dbName)
+	lines := strings.Split(string(out), "\n")
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		if line == "" || strings.HasPrefix(line, "Tables_in") {
+			continue
+		}
+		fmt.Printf("  - %s\n", line)
+	}
+}
+
+func handleTableStats(user, pass string) {
+	dbName := selectDatabase(user, pass)
+	if dbName == "" {
+		return
+	}
+
+	query := "SELECT TABLE_NAME, TABLE_ROWS, TABLE_COLLATION FROM information_schema.TABLES WHERE TABLE_SCHEMA = '" + dbName + "';"
+	args := []string{"-u", user}
+	if pass != "" {
+		args = append(args, "-p"+pass)
+	}
+	args = append(args, "-e", query)
+
+	cmd := exec.Command(mysqlPath, args...)
+	out, err := cmd.Output()
+	if err != nil {
+		fmt.Printf("Error fetching table stats: %v\n", err)
+		return
+	}
+
+	fmt.Printf("\nStats for %s:\n", dbName)
+	fmt.Printf("%-30s | %-10s | %-20s\n", "Table Name", "Rows", "Collation/Encoding")
+	fmt.Println(strings.Repeat("-", 65))
+
+	lines := strings.Split(string(out), "\n")
+	for i, line := range lines {
+		if i == 0 || strings.TrimSpace(line) == "" { // Skip header and empty lines
+			continue
+		}
+		parts := strings.Fields(line)
+		if len(parts) >= 3 {
+			fmt.Printf("%-30s | %-10s | %-20s\n", parts[0], parts[1], parts[2])
+		} else if len(parts) == 2 {
+			fmt.Printf("%-30s | %-10s | %-20s\n", parts[0], parts[1], "N/A")
+		}
+	}
 }
 
 func listDatabases(user, pass string) []string {
@@ -186,7 +263,6 @@ func backupDB(dbName, user, pass string) {
 		return
 	}
 
-	// Zip it
 	fmt.Printf("Compressing to %s...\n", zipFile)
 	if err := zipSingleFile(sqlFile, zipFile); err != nil {
 		fmt.Printf("Error zipping: %v\n", err)
@@ -223,7 +299,6 @@ func handleRestore(user, pass string) {
 
 	selectedZip := zips[i-1]
 	
-	// Ask for target DB name
 	fmt.Print("Enter target database name (will be created if not exists): ")
 	dbName, _ := reader.ReadString('\n')
 	dbName = strings.TrimSpace(dbName)
@@ -232,10 +307,8 @@ func handleRestore(user, pass string) {
 		return
 	}
 
-	// Create DB if not exists
 	createDB(dbName, user, pass)
 
-	// Unzip and restore
 	sqlFile, err := unzipSingleFile(selectedZip)
 	if err != nil {
 		fmt.Printf("Error unzipping: %v\n", err)
@@ -245,7 +318,6 @@ func handleRestore(user, pass string) {
 
 	fmt.Printf("Restoring %s to %s...\n", sqlFile, dbName)
 	
-	// Prepare source command
 	escapedPath := strings.ReplaceAll(sqlFile, "\\", "/")
 	sourceCmd := fmt.Sprintf("source %s", escapedPath)
 
