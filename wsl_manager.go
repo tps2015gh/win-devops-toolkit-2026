@@ -10,6 +10,8 @@ import (
 	"strings"
 	"syscall"
 	"unsafe"
+
+	"golang.org/x/sys/windows/registry"
 )
 
 type DiskStatus struct {
@@ -46,7 +48,7 @@ func main() {
 	for {
 		fmt.Println("\nWSL Distribution Manager")
 		fmt.Println("========================")
-		fmt.Println("1. List Installed Distros (with Estimated VHDX Size)")
+		fmt.Println("1. List Installed Distros (with Registry-accurate Disk Usage)")
 		fmt.Println("2. List Available Distros Online")
 		fmt.Println("3. Install New Distro")
 		fmt.Println("4. Remove (Unregister) Distro")
@@ -83,26 +85,54 @@ func listInstalled() {
 	output := cleanOutput(out)
 	fmt.Println(output)
 
-	fmt.Println("\nEstimated Disk Usage (LocalState/*.vhdx):")
-	// Search for all ext4.vhdx files in LocalAppData
-	localAppData := os.Getenv("LOCALAPPDATA")
-	searchPath := filepath.Join(localAppData, "Packages", "*", "LocalState", "ext4.vhdx")
-	matches, _ := filepath.Glob(searchPath)
+	fmt.Println("\nRegistry-accurate Disk Usage (ext4.vhdx):")
+	
+	// Open the registry key where WSL distros are registered
+	k, err := registry.OpenKey(registry.CURRENT_USER, `Software\Microsoft\Windows\CurrentVersion\Lxss`, registry.READ)
+	if err != nil {
+		fmt.Printf("Error opening registry: %v\n", err)
+		return
+	}
+	defer k.Close()
 
-	if len(matches) == 0 {
-		fmt.Println("  (No .vhdx files found in standard locations)")
-	} else {
-		for _, m := range matches {
-			if info, err := os.Stat(m); err == nil {
-				// Try to extract distro name from folder path
-				parts := strings.Split(m, string(os.PathSeparator))
-				pkgName := "Unknown"
-				if len(parts) > 3 {
-					pkgName = parts[len(parts)-3]
-				}
-				fmt.Printf("  - %-40s: %s\n", pkgName, formatSize(info.Size()))
+	subkeys, err := k.ReadSubKeyNames(-1)
+	if err != nil {
+		fmt.Printf("Error reading subkeys: %v\n", err)
+		return
+	}
+
+	found := false
+	for _, guid := range subkeys {
+		// Distros are keys with GUID-like names
+		if !strings.HasPrefix(guid, "{") {
+			continue
+		}
+
+		sk, err := registry.OpenKey(registry.CURRENT_USER, `Software\Microsoft\Windows\CurrentVersion\Lxss\`+guid, registry.READ)
+		if err != nil {
+			continue
+		}
+
+		name, _, err1 := sk.GetStringValue("DistributionName")
+		basePath, _, err2 := sk.GetStringValue("BasePath")
+		sk.Close()
+
+		if err1 == nil && err2 == nil {
+			found = true
+			vhdxPath := filepath.Join(basePath, "ext4.vhdx")
+			sizeStr := "Not Found"
+			if info, err := os.Stat(vhdxPath); err == nil {
+				sizeStr = formatSize(info.Size())
+			}
+			fmt.Printf("  - %-20s: %s\n", name, sizeStr)
+			if sizeStr != "Not Found" {
+				fmt.Printf("    Path: %s\n", vhdxPath)
 			}
 		}
+	}
+
+	if !found {
+		fmt.Println("  (No distributions found in registry)")
 	}
 }
 
@@ -126,7 +156,6 @@ func installDistro(reader *bufio.Reader) {
 	count := 1
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
-		// Fix: Ignore the descriptive header lines
 		if line == "" || strings.HasPrefix(line, "The following") || strings.HasPrefix(line, "NAME") || strings.HasPrefix(line, "Install") {
 			continue
 		}
