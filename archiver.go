@@ -11,10 +11,17 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: archiver.exe <folder_to_compress>")
-		fmt.Println("Example: archiver.exe my_project")
-		os.Exit(1)
+	if len(os.Args) < 2 || os.Args[1] == "-h" || os.Args[1] == "--help" {
+		fmt.Println("Archiver - Robust Unicode-aware Compression Tool")
+		fmt.Println("\nUsage:")
+		fmt.Println("  archiver.exe <folder_to_compress>")
+		fmt.Println("\nFlags:")
+		fmt.Println("  -h, --help    Show this help message")
+		fmt.Println("\nFeatures:")
+		fmt.Println("  - Full Unicode support (Thai, Chinese, etc.)")
+		fmt.Println("  - Robust handling of deep directory structures (like .git)")
+		fmt.Println("  - Automatic timestamping to prevent overwrites")
+		os.Exit(0)
 	}
 
 	targetDir := os.Args[1]
@@ -48,7 +55,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("\nSuccessfully compressed to %s\n", zipFileName)
+	finalPath, _ := filepath.Abs(zipFileName)
+	fmt.Printf("\nSuccessfully compressed to:\n%s\n", finalPath)
 }
 
 func zipFolder(source, target string) error {
