@@ -130,7 +130,6 @@ func installDistro(reader *bufio.Reader) {
 	lines := strings.Split(cleanOutput(out), "\n")
 	
 	var onlineDistros []string
-	count := 1
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
 		if line == "" || strings.HasPrefix(line, "The following") || strings.HasPrefix(line, "NAME") || strings.HasPrefix(line, "Install") {
