@@ -58,7 +58,7 @@ func main() {
 		fmt.Println("3. Install New Distro (with Disk Check)")
 		fmt.Println("4. Remove (Unregister) Distro")
 		fmt.Println("5. Login to Distro")
-		fmt.Println("6. Install Dev Tools (Nano, Python, VS Code) to Distro")
+		fmt.Println("6. Install Dev Tools (Nano, Python, OpenCode AI) to Distro")
 		fmt.Println("7. System Disk Summary")
 		fmt.Println("8. Exit")
 		fmt.Print("Select (1-8): ")
@@ -269,7 +269,7 @@ func installToolsToDistro(reader *bufio.Reader) {
 		return
 	}
 
-	fmt.Println("\nSelect a distribution to install Dev Tools (Nano, Python3, VS Code support):")
+	fmt.Println("\nSelect a distribution to install Dev Tools (Nano, Python3, OpenCode AI):")
 	for i, d := range distros {
 		fmt.Printf("[%d] %s\n", i+1, d)
 	}
@@ -288,21 +288,27 @@ func installToolsToDistro(reader *bufio.Reader) {
 	selected := distros[idx-1]
 	fmt.Printf("\nInstalling tools to %s...\n", selected)
 
-	// Determine package manager and run install commands
-	// We'll try common patterns for Debian/Ubuntu (apt) and others
 	script := `
+	# 1. Install Basic Tools (Nano, Python, Curl)
 	if command -v apt-get >/dev/null; then
-		sudo apt-get update && sudo apt-get install -y nano python3 python3-pip
+		echo "Detected Debian/Ubuntu (apt)..."
+		sudo apt-get update && sudo apt-get install -y nano python3 python3-pip curl
+	elif command -v pacman >/dev/null; then
+		echo "Detected Arch Linux (pacman)..."
+		sudo pacman -Sy --noconfirm nano python python-pip curl
+	elif command -v dnf >/dev/null; then
+		echo "Detected Fedora/RHEL (dnf)..."
+		sudo dnf install -y nano python3 python3-pip curl
 	elif command -v zypper >/dev/null; then
-		sudo zypper install -y nano python3
+		echo "Detected openSUSE (zypper)..."
+		sudo zypper install -y nano python3 curl
 	else
-		echo "Could not detect package manager (apt or zypper). Please install manually."
+		echo "Could not detect package manager. Please install nano, python, and curl manually."
 	fi
-	# Also trigger VS Code remote server setup by running 'code' once if it's in path
-	if command -v code >/dev/null; then
-		echo "Triggering VS Code Remote setup..."
-		code --version
-	fi
+
+	# 2. Install OpenCode (AI Agent Tool)
+	echo "Installing OpenCode AI Agent..."
+	curl -fsSL https://opencode.ai/install | bash
 	`
 	
 	cmd := exec.Command("wsl", "-d", selected, "bash", "-c", script)
