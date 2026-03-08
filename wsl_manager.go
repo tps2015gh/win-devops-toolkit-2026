@@ -289,28 +289,38 @@ func installToolsToDistro(reader *bufio.Reader) {
 	fmt.Printf("\nInstalling tools to %s...\n", selected)
 
 	script := `
-	# 1. Install Basic Tools (Git, Nano, Python, Curl, Nodejs/NPM)
+	# 0. Check for sudo/root
+	SUDO=""
+	if [ "$(id -u)" -ne 0 ]; then
+		if command -v sudo >/dev/null; then
+			SUDO="sudo"
+		else
+			echo "Warning: Not root and 'sudo' not found. Some commands may fail."
+		fi
+	fi
+
+	# 1. Install Basic Tools (Bash, Git, Nano, Python, Curl, Nodejs/NPM, sudo, which)
 	echo "Phase 1: Installing system packages..."
 	if command -v apt-get >/dev/null; then
 		echo "Detected Debian/Ubuntu (apt)..."
-		sudo apt-get update && sudo apt-get install -y git nano python3 python3-pip curl nodejs npm
+		$SUDO apt-get update && $SUDO apt-get install -y bash git nano python3 python3-pip curl nodejs npm sudo which
 	elif command -v pacman >/dev/null; then
 		echo "Detected Arch Linux (pacman)..."
-		sudo pacman -Sy --noconfirm git nano python python-pip curl nodejs npm
+		$SUDO pacman -Sy --noconfirm bash git nano python python-pip curl nodejs npm sudo which
 	elif command -v dnf >/dev/null; then
 		echo "Detected Fedora/RHEL (dnf)..."
-		sudo dnf install -y git nano python3 python3-pip curl nodejs npm
+		$SUDO dnf install -y bash git nano python3 python3-pip curl nodejs npm sudo which
 	elif command -v zypper >/dev/null; then
 		echo "Detected openSUSE (zypper)..."
-		sudo zypper install -y git nano python3 curl nodejs npm
+		$SUDO zypper install -y bash git nano python3 curl nodejs npm sudo which
 	else
-		echo "Could not detect package manager. Please install git, nano, python, curl, and nodejs manually."
+		echo "Could not detect package manager. Please install bash, git, nano, python, curl, and nodejs manually."
 	fi
 
 	# 2. Install Gemini-CLI (via NPM)
 	echo "Phase 2: Installing Gemini CLI..."
 	if command -v npm >/dev/null; then
-		sudo npm install -g @google/gemini-cli
+		$SUDO npm install -g @google/gemini-cli
 	else
 		echo "NPM not found. Skipping Gemini CLI installation."
 	fi
@@ -324,7 +334,7 @@ func installToolsToDistro(reader *bufio.Reader) {
 	fi
 	`
 	
-	cmd := exec.Command("wsl", "-d", selected, "bash", "-c", script)
+	cmd := exec.Command("wsl", "-u", "root", "-d", selected, "sh", "-c", script)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
