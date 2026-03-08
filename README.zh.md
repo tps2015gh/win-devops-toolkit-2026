@@ -1,4 +1,4 @@
-🌐 **语言:** [**English**](./README.md) | [**ภาษาไทย (Thai)**](./README.th.md) | [简体中文] | [**压缩工具 (Archiver)**](./README.archiver.md) | [**数据库管理 (DB Manager)**](./README.db.md)
+🌐 **语言:** [**English**](./README.md) | [**ภาษาไทย (Thai)**](./README.th.md) | [简体中文] | [**压缩工具 (Archiver)**](./README.archiver.md) | [**数据库管理 (DB Manager)**](./README.db.md) | [**WSL 管理**](./README.wsl.md)
 
 # win-audit-2026 (abcd-setup-server)
 

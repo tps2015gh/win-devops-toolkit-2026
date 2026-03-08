@@ -26,6 +26,9 @@ go build -o db_manager.exe db_manager.go
 echo Compiling Dev Tool Collector (dev_tool_collector.go) to dev_tool_collector.exe...
 go build -o dev_tool_collector.exe dev_tool_collector.go
 
+echo Compiling WSL Manager (wsl_manager.go) to wsl_manager.exe...
+go build -o wsl_manager.exe wsl_manager.go
+
 echo.
 if %ERRORLEVEL% EQU 0 (
     echo Build Successful!

@@ -1,6 +1,6 @@
 # Archiver - Robust Unicode-aware Compression Tool
 
-[**🏠 Back to Home**](./README.md) | [**English**](#english) | [**ภาษาไทย**](#thai) | [**简体中文**](#chinese) | [**DB Manager**](./README.db.md)
+[**🏠 Back to Home**](./README.md) | [**English**](#english) | [**ภาษาไทย**](#thai) | [**简体中文**](#chinese) | [**DB Manager**](./README.db.md) | [**WSL Manager**](./README.wsl.md)
 
 ---
 

@@ -1,6 +1,6 @@
 # MariaDB Database Manager (Backup/Restore)
 
-[**🏠 Back to Home**](./README.md) | [**English**](#english) | [**ภาษาไทย**](#thai) | [**简体中文**](#chinese) | [**Archiver Tool**](./README.archiver.md)
+[**🏠 Back to Home**](./README.md) | [**English**](#english) | [**ภาษาไทย**](#thai) | [**简体中文**](#chinese) | [**Archiver Tool**](./README.archiver.md) | [**WSL Manager**](./README.wsl.md)
 
 ---
 
