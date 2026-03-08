@@ -18,7 +18,7 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 
 ### 1. System Information Collector (`system_info.exe`)
 - **Memory:** High-precision RAM (Total, Free, Load) via Windows `syscall`.
-- **CPU:** Detailed processor specs and core counts.
+- **CPU:** Detailed processor specs, including **Physical Sockets**, **Cores per Socket**, and **Total Core** counts.
 - **Storage:** Logical disk analysis (Total/Free/Used space, File System).
 - **OS:** Version and Build identification.
 - **Security:** Detection of active Antivirus and Firewall products via WMI.
