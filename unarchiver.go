@@ -2,45 +2,60 @@ package main
 
 import (
 	"archive/zip"
+	"bufio"
 	"fmt"
 	"io"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
 func main() {
 	zips, _ := filepath.Glob("*.zip")
 
-	if len(os.Args) < 2 {
+	var selectedZip string
+
+	// Check if a zip file was passed as an argument
+	if len(os.Args) >= 2 {
+		selectedZip = os.Args[1]
+	} else {
+		// Interactive Mode
 		fmt.Println("Unarchiver - Robust Unicode-aware Extraction Tool")
 		fmt.Println("\nAvailable ZIP files in this folder:")
+		
 		if len(zips) == 0 {
-			fmt.Println("  (No .zip files found)")
-		} else {
-			for _, z := range zips {
-				fmt.Printf("  - %s\n", z)
-			}
+			fmt.Println("  (No .zip files found in current directory)")
+			fmt.Println("\nPress Enter to exit...")
+			bufio.NewReader(os.Stdin).ReadString('\n')
+			os.Exit(0)
 		}
 
-		fmt.Println("\nUsage:")
-		fmt.Println("  unarchiver.exe <zip_file_name>")
-		fmt.Println("\nExample:")
-		if len(zips) > 0 {
-			fmt.Printf("  unarchiver.exe %s\n", zips[0])
-		} else {
-			fmt.Println("  unarchiver.exe my_backup.zip")
+		for i, z := range zips {
+			fmt.Printf("  [%d] %s\n", i+1, z)
 		}
-		os.Exit(0)
+
+		fmt.Printf("\nSelect a file number to extract (1-%d): ", len(zips))
+		
+		reader := bufio.NewReader(os.Stdin)
+		input, _ := reader.ReadString('\n')
+		input = strings.TrimSpace(input)
+
+		choice, err := strconv.Atoi(input)
+		if err != nil || choice < 1 || choice > len(zips) {
+			fmt.Println("Invalid selection. Exiting.")
+			os.Exit(1)
+		}
+
+		selectedZip = zips[choice-1]
 	}
 
-	zipFile := os.Args[1]
 	destFolder := "_unzip"
 
-	fmt.Printf("Extracting: %s\n", zipFile)
+	fmt.Printf("\nExtracting: %s\n", selectedZip)
 	fmt.Printf("Destination: %s\n", destFolder)
 
-	err := unzip(zipFile, destFolder)
+	err := unzip(selectedZip, destFolder)
 	if err != nil {
 		fmt.Printf("\nExtraction failed: %v\n", err)
 		os.Exit(1)
@@ -48,6 +63,9 @@ func main() {
 
 	finalPath, _ := filepath.Abs(destFolder)
 	fmt.Printf("\nSuccessfully extracted to:\n%s\n", finalPath)
+	
+	fmt.Println("\nPress Enter to close...")
+	bufio.NewReader(os.Stdin).ReadString('\n')
 }
 
 func unzip(src string, dest string) error {
