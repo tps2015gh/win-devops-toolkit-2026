@@ -43,8 +43,7 @@ func getDiskSpace(path string) (DiskStatus, error) {
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	for {
-		fmt.Println("
-WSL Distribution Manager")
+		fmt.Println("\nWSL Distribution Manager")
 		fmt.Println("========================")
 		fmt.Println("1. List Installed Distros (with Disk Usage)")
 		fmt.Println("2. List Available Distros Online")
@@ -54,8 +53,7 @@ WSL Distribution Manager")
 		fmt.Println("6. Exit")
 		fmt.Print("Select (1-6): ")
 
-		choice, _ := reader.ReadString('
-')
+		choice, _ := reader.ReadString('\n')
 		choice = strings.TrimSpace(choice)
 
 		switch choice {
@@ -78,32 +76,27 @@ WSL Distribution Manager")
 }
 
 func listInstalled() {
-	fmt.Println("
-Installed WSL Distributions:")
+	fmt.Println("\nInstalled WSL Distributions:")
 	cmd := exec.Command("wsl", "--list", "--verbose")
 	out, _ := cmd.CombinedOutput()
 	fmt.Println(cleanOutput(out))
 }
 
 func listOnline() {
-	fmt.Println("
-Available Distributions Online:")
+	fmt.Println("\nAvailable Distributions Online:")
 	cmd := exec.Command("wsl", "--list", "--online")
 	out, _ := cmd.CombinedOutput()
 	fmt.Println(cleanOutput(out))
 }
 
 func installDistro(reader *bufio.Reader) {
-	fmt.Println("
-Fetching available distributions...")
+	fmt.Println("\nFetching available distributions...")
 	cmd := exec.Command("wsl", "--list", "--online")
 	out, _ := cmd.CombinedOutput()
-	lines := strings.Split(cleanOutput(out), "
-")
+	lines := strings.Split(cleanOutput(out), "\n")
 	
 	var onlineDistros []string
-	fmt.Println("
-Select a distribution to install:")
+	fmt.Println("\nSelect a distribution to install:")
 	count := 1
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
@@ -112,8 +105,7 @@ Select a distribution to install:")
 		}
 		fields := strings.Fields(line)
 		if len(fields) > 0 {
-			fmt.Printf("[%d] %s
-", count, fields[0])
+			fmt.Printf("[%d] %s\n", count, fields[0])
 			onlineDistros = append(onlineDistros, fields[0])
 			count++
 		}
@@ -125,10 +117,8 @@ Select a distribution to install:")
 	}
 
 	showDiskSummary()
-	fmt.Printf("
-Enter number to install (1-%d) or 'c' to cancel: ", len(onlineDistros))
-	input, _ := reader.ReadString('
-')
+	fmt.Printf("\nEnter number to install (1-%d) or 'c' to cancel: ", len(onlineDistros))
+	input, _ := reader.ReadString('\n')
 	input = strings.TrimSpace(input)
 	
 	if input == "c" { return }
@@ -140,8 +130,7 @@ Enter number to install (1-%d) or 'c' to cancel: ", len(onlineDistros))
 	}
 
 	selected := onlineDistros[idx-1]
-	fmt.Printf("Installing %s... (This may take a few minutes)
-", selected)
+	fmt.Printf("Installing %s... (This may take a few minutes)\n", selected)
 	installCmd := exec.Command("wsl", "--install", "-d", selected)
 	installCmd.Stdout = os.Stdout
 	installCmd.Stderr = os.Stderr
@@ -151,12 +140,10 @@ Enter number to install (1-%d) or 'c' to cancel: ", len(onlineDistros))
 func removeDistro(reader *bufio.Reader) {
 	cmd := exec.Command("wsl", "--list", "--all")
 	out, _ := cmd.CombinedOutput()
-	lines := strings.Split(cleanOutput(out), "
-")
+	lines := strings.Split(cleanOutput(out), "\n")
 	
 	var installedDistros []string
-	fmt.Println("
-Select a distribution to REMOVE (WARNING: All data will be deleted!):")
+	fmt.Println("\nSelect a distribution to REMOVE (WARNING: All data will be deleted!):")
 	count := 1
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
@@ -166,8 +153,7 @@ Select a distribution to REMOVE (WARNING: All data will be deleted!):")
 		fields := strings.Fields(line)
 		if len(fields) == 0 { continue }
 		name := strings.TrimPrefix(fields[0], "*")
-		fmt.Printf("[%d] %s
-", count, name)
+		fmt.Printf("[%d] %s\n", count, name)
 		installedDistros = append(installedDistros, name)
 		count++
 	}
@@ -177,10 +163,8 @@ Select a distribution to REMOVE (WARNING: All data will be deleted!):")
 		return
 	}
 
-	fmt.Printf("
-Enter number to UNREGISTER (1-%d) or 'c' to cancel: ", len(installedDistros))
-	input, _ := reader.ReadString('
-')
+	fmt.Printf("\nEnter number to UNREGISTER (1-%d) or 'c' to cancel: ", len(installedDistros))
+	input, _ := reader.ReadString('\n')
 	input = strings.TrimSpace(input)
 	
 	if input == "c" { return }
@@ -192,29 +176,22 @@ Enter number to UNREGISTER (1-%d) or 'c' to cancel: ", len(installedDistros))
 	}
 
 	selected := installedDistros[idx-1]
-	fmt.Printf("Removing %s...
-", selected)
+	fmt.Printf("Removing %s...\n", selected)
 	removeCmd := exec.Command("wsl", "--unregister", selected)
 	removeCmd.Run()
 	fmt.Println("Removal complete.")
 }
 
 func showDiskSummary() {
-	disk, err := getDiskSpace("C:")
+	disk, err := getDiskSpace("C:\\")
 	if err != nil {
-		fmt.Printf("Error getting disk space: %v
-", err)
+		fmt.Printf("Error getting disk space: %v\n", err)
 		return
 	}
-	fmt.Printf("
-System Disk Summary (C:):
-")
-	fmt.Printf("  Total: %.2f GB
-", float64(disk.All)/1024/1024/1024)
-	fmt.Printf("  Free:  %.2f GB
-", float64(disk.Free)/1024/1024/1024)
-	fmt.Printf("  Used:  %.2f GB
-", float64(disk.Used)/1024/1024/1024)
+	fmt.Printf("\nSystem Disk Summary (C:):\n")
+	fmt.Printf("  Total: %.2f GB\n", float64(disk.All)/1024/1024/1024)
+	fmt.Printf("  Free:  %.2f GB\n", float64(disk.Free)/1024/1024/1024)
+	fmt.Printf("  Used:  %.2f GB\n", float64(disk.Used)/1024/1024/1024)
 }
 
 func cleanOutput(b []byte) string {
