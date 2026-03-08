@@ -58,9 +58,10 @@ func main() {
 		fmt.Println("3. Install New Distro (with Disk Check)")
 		fmt.Println("4. Remove (Unregister) Distro")
 		fmt.Println("5. Login to Distro")
-		fmt.Println("6. System Disk Summary")
-		fmt.Println("7. Exit")
-		fmt.Print("Select (1-7): ")
+		fmt.Println("6. Install Dev Tools (Nano, Python, VS Code) to Distro")
+		fmt.Println("7. System Disk Summary")
+		fmt.Println("8. Exit")
+		fmt.Print("Select (1-8): ")
 
 		choice, _ := reader.ReadString('\n')
 		choice = strings.TrimSpace(choice)
@@ -77,8 +78,10 @@ func main() {
 		case "5":
 			loginDistro(reader)
 		case "6":
-			showDiskSummary()
+			installToolsToDistro(reader)
 		case "7":
+			showDiskSummary()
+		case "8":
 			return
 		default:
 			fmt.Println("Invalid selection.")
@@ -257,6 +260,61 @@ func loginDistro(reader *bufio.Reader) {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Run()
+}
+
+func installToolsToDistro(reader *bufio.Reader) {
+	distros := getInstalledDistros()
+	if len(distros) == 0 {
+		fmt.Println("No distributions found.")
+		return
+	}
+
+	fmt.Println("\nSelect a distribution to install Dev Tools (Nano, Python3, VS Code support):")
+	for i, d := range distros {
+		fmt.Printf("[%d] %s\n", i+1, d)
+	}
+
+	fmt.Printf("\nEnter number (1-%d) or 'c' to cancel: ", len(distros))
+	input, _ := reader.ReadString('\n')
+	input = strings.TrimSpace(input)
+	if input == "c" { return }
+	
+	idx, err := strconv.Atoi(input)
+	if err != nil || idx < 1 || idx > len(distros) {
+		fmt.Println("Invalid selection.")
+		return
+	}
+
+	selected := distros[idx-1]
+	fmt.Printf("\nInstalling tools to %s...\n", selected)
+
+	// Determine package manager and run install commands
+	// We'll try common patterns for Debian/Ubuntu (apt) and others
+	script := `
+	if command -v apt-get >/dev/null; then
+		sudo apt-get update && sudo apt-get install -y nano python3 python3-pip
+	elif command -v zypper >/dev/null; then
+		sudo zypper install -y nano python3
+	else
+		echo "Could not detect package manager (apt or zypper). Please install manually."
+	fi
+	# Also trigger VS Code remote server setup by running 'code' once if it's in path
+	if command -v code >/dev/null; then
+		echo "Triggering VS Code Remote setup..."
+		code --version
+	fi
+	`
+	
+	cmd := exec.Command("wsl", "-d", selected, "bash", "-c", script)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
+		fmt.Printf("\n[!] Installation failed or was interrupted: %v\n", err)
+	} else {
+		fmt.Printf("\n[+] Setup complete for %s!\n", selected)
+	}
 }
 
 func getInstalledDistros() []string {
