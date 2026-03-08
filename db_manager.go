@@ -28,8 +28,7 @@ func main() {
 	// 2. Get Credentials
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Enter credentials (format: user/pass): ")
-	creds, _ := reader.ReadString('
-')
+	creds, _ := reader.ReadString('\n')
 	creds = strings.TrimSpace(creds)
 
 	parts := strings.SplitN(creds, "/", 2)
@@ -43,15 +42,13 @@ func main() {
 	}
 
 	for {
-		fmt.Println("
-Choose action:")
+		fmt.Println("\nChoose action:")
 		fmt.Println("1. List Databases & Backup")
 		fmt.Println("2. Restore from .sql.zip")
 		fmt.Println("3. Exit")
 		fmt.Print("Select (1-3): ")
 
-		action, _ := reader.ReadString('
-')
+		action, _ := reader.ReadString('\n')
 		action = strings.TrimSpace(action)
 
 		switch action {
@@ -75,9 +72,9 @@ func setupBinaries() {
 	// If not in PATH, try common XAMPP paths
 	if mysqlPath == "" || mysqldumpPath == "" {
 		commonPaths := []string{
-			"C:\xampp\mysql\bin",
-			"D:\xampp\mysql\bin",
-			"C:\xampp_v8_1_25\mysql\bin",
+			"C:\\xampp\\mysql\\bin",
+			"D:\\xampp\\mysql\\bin",
+			"C:\\xampp_v8_1_25\\mysql\\bin",
 		}
 		for _, p := range commonPaths {
 			m := filepath.Join(p, "mysql.exe")
@@ -94,21 +91,17 @@ func setupBinaries() {
 	reader := bufio.NewReader(os.Stdin)
 	if mysqlPath == "" {
 		fmt.Print("mysql.exe not found. Enter full path: ")
-		p, _ := reader.ReadString('
-')
+		p, _ := reader.ReadString('\n')
 		mysqlPath = strings.TrimSpace(p)
 	}
 	if mysqldumpPath == "" {
 		fmt.Print("mysqldump.exe not found. Enter full path: ")
-		p, _ := reader.ReadString('
-')
+		p, _ := reader.ReadString('\n')
 		mysqldumpPath = strings.TrimSpace(p)
 	}
 	
-	fmt.Printf("Using mysql:     %s
-", mysqlPath)
-	fmt.Printf("Using mysqldump: %s
-", mysqldumpPath)
+	fmt.Printf("Using mysql:     %s\n", mysqlPath)
+	fmt.Printf("Using mysqldump: %s\n", mysqldumpPath)
 }
 
 func handleBackup(user, pass string) {
@@ -118,18 +111,14 @@ func handleBackup(user, pass string) {
 		return
 	}
 
-	fmt.Println("
-Available Databases:")
+	fmt.Println("\nAvailable Databases:")
 	for i, db := range dbs {
-		fmt.Printf("[%d] %s
-", i+1, db)
+		fmt.Printf("[%d] %s\n", i+1, db)
 	}
 
-	fmt.Printf("
-Enter number to backup (1-%d): ", len(dbs))
+	fmt.Printf("\nEnter number to backup (1-%d): ", len(dbs))
 	reader := bufio.NewReader(os.Stdin)
-	input, _ := reader.ReadString('
-')
+	input, _ := reader.ReadString('\n')
 	idx := strings.TrimSpace(input)
 
 	i, err := strconv.Atoi(idx)
@@ -152,13 +141,11 @@ func listDatabases(user, pass string) []string {
 	cmd := exec.Command(mysqlPath, args...)
 	out, err := cmd.Output()
 	if err != nil {
-		fmt.Printf("Error listing databases: %v
-", err)
+		fmt.Printf("Error listing databases: %v\n", err)
 		return nil
 	}
 
-	lines := strings.Split(string(out), "
-")
+	lines := strings.Split(string(out), "\n")
 	var dbs []string
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
@@ -175,8 +162,7 @@ func backupDB(dbName, user, pass string) {
 	sqlFile := fmt.Sprintf("%s_%s.sql", dbName, timestamp)
 	zipFile := sqlFile + ".zip"
 
-	fmt.Printf("Backing up %s to %s...
-", dbName, sqlFile)
+	fmt.Printf("Backing up %s to %s...\n", dbName, sqlFile)
 
 	args := []string{"-u", user}
 	if pass != "" {
@@ -187,8 +173,7 @@ func backupDB(dbName, user, pass string) {
 	cmd := exec.Command(mysqldumpPath, args...)
 	file, err := os.Create(sqlFile)
 	if err != nil {
-		fmt.Printf("Error creating file: %v
-", err)
+		fmt.Printf("Error creating file: %v\n", err)
 		return
 	}
 	cmd.Stdout = file
@@ -196,26 +181,21 @@ func backupDB(dbName, user, pass string) {
 	file.Close()
 
 	if err != nil {
-		fmt.Printf("Error running mysqldump: %v
-", err)
+		fmt.Printf("Error running mysqldump: %v\n", err)
 		os.Remove(sqlFile)
 		return
 	}
 
 	// Zip it
-	fmt.Printf("Compressing to %s...
-", zipFile)
+	fmt.Printf("Compressing to %s...\n", zipFile)
 	if err := zipSingleFile(sqlFile, zipFile); err != nil {
-		fmt.Printf("Error zipping: %v
-", err)
+		fmt.Printf("Error zipping: %v\n", err)
 		return
 	}
 
 	os.Remove(sqlFile)
 	absPath, _ := filepath.Abs(zipFile)
-	fmt.Printf("Backup successful!
-Path: %s
-", absPath)
+	fmt.Printf("Backup successful!\nPath: %s\n", absPath)
 }
 
 func handleRestore(user, pass string) {
@@ -225,18 +205,14 @@ func handleRestore(user, pass string) {
 		return
 	}
 
-	fmt.Println("
-Available Backups:")
+	fmt.Println("\nAvailable Backups:")
 	for i, z := range zips {
-		fmt.Printf("[%d] %s
-", i+1, z)
+		fmt.Printf("[%d] %s\n", i+1, z)
 	}
 
-	fmt.Printf("
-Select backup to restore (1-%d): ", len(zips))
+	fmt.Printf("\nSelect backup to restore (1-%d): ", len(zips))
 	reader := bufio.NewReader(os.Stdin)
-	input, _ := reader.ReadString('
-')
+	input, _ := reader.ReadString('\n')
 	idx := strings.TrimSpace(input)
 
 	i, err := strconv.Atoi(idx)
@@ -249,8 +225,7 @@ Select backup to restore (1-%d): ", len(zips))
 	
 	// Ask for target DB name
 	fmt.Print("Enter target database name (will be created if not exists): ")
-	dbName, _ := reader.ReadString('
-')
+	dbName, _ := reader.ReadString('\n')
 	dbName = strings.TrimSpace(dbName)
 	if dbName == "" {
 		fmt.Println("Database name cannot be empty.")
@@ -263,17 +238,15 @@ Select backup to restore (1-%d): ", len(zips))
 	// Unzip and restore
 	sqlFile, err := unzipSingleFile(selectedZip)
 	if err != nil {
-		fmt.Printf("Error unzipping: %v
-", err)
+		fmt.Printf("Error unzipping: %v\n", err)
 		return
 	}
 	defer os.Remove(sqlFile)
 
-	fmt.Printf("Restoring %s to %s...
-", sqlFile, dbName)
+	fmt.Printf("Restoring %s to %s...\n", sqlFile, dbName)
 	
 	// Prepare source command
-	escapedPath := strings.ReplaceAll(sqlFile, "", "/")
+	escapedPath := strings.ReplaceAll(sqlFile, "\\", "/")
 	sourceCmd := fmt.Sprintf("source %s", escapedPath)
 
 	args := []string{"-u", user}
@@ -285,8 +258,7 @@ Select backup to restore (1-%d): ", len(zips))
 	cmd := exec.Command(mysqlPath, args...)
 	err = cmd.Run()
 	if err != nil {
-		fmt.Printf("Restore failed: %v
-", err)
+		fmt.Printf("Restore failed: %v\n", err)
 	} else {
 		fmt.Println("Restore successful!")
 	}
