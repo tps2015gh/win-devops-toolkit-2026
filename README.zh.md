@@ -52,6 +52,12 @@
 - **自动发现:** 自动检测 XAMPP 或系统环境中的 MariaDB/MySQL 路径。
 - **详情:** 请参阅 [**数据库管理文档**](./README.db.md) 获取详细使用说明。
 
+### 7. 开发工具发现引擎 (`dev_tool_collector.exe`)
+- **全面审计:** 扫描 Go, Rust, Java, Python, Node.js, PHP, Perl, VS Code, Android SDK 等。
+- **库检测:** 检测 Python 库，如 Pandas 和 Tkinter。
+- **丰富报表:** 在 `./output/` 文件夹中生成结构化 JSON 和漂亮的交互式 HTML 报告。
+- **进度追踪:** 在发现过程中实时显示状态和进度。
+
 ---
 
 ## 🛠️ 使用方法

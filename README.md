@@ -52,6 +52,12 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 - **Auto-Discovery:** Automatically detects MariaDB/MySQL paths in XAMPP or system environment.
 - **Details:** See the [**DB Manager Documentation**](./README.db.md) for full usage instructions.
 
+### 7. Dev Tool Discovery Engine (`dev_tool_collector.exe`)
+- **Comprehensive Audit:** Scans for Go, Rust, Java, Python, Node.js, PHP, Perl, VS Code, Android SDK, and more.
+- **Library Check:** Detects Python libraries like Pandas and Tkinter.
+- **Rich Reporting:** Generates a structured JSON and a beautiful, interactive HTML report in `./output/`.
+- **Progress Tracking:** Shows real-time status updates during discovery.
+
 ---
 
 ## 🛠️ Usage
