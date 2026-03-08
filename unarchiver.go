@@ -14,25 +14,20 @@ func main() {
 
 	if len(os.Args) < 2 {
 		fmt.Println("Unarchiver - Robust Unicode-aware Extraction Tool")
-		fmt.Println("
-Available ZIP files in this folder:")
+		fmt.Println("\nAvailable ZIP files in this folder:")
 		if len(zips) == 0 {
 			fmt.Println("  (No .zip files found)")
 		} else {
 			for _, z := range zips {
-				fmt.Printf("  - %s
-", z)
+				fmt.Printf("  - %s\n", z)
 			}
 		}
 
-		fmt.Println("
-Usage:")
+		fmt.Println("\nUsage:")
 		fmt.Println("  unarchiver.exe <zip_file_name>")
-		fmt.Println("
-Example:")
+		fmt.Println("\nExample:")
 		if len(zips) > 0 {
-			fmt.Printf("  unarchiver.exe %s
-", zips[0])
+			fmt.Printf("  unarchiver.exe %s\n", zips[0])
 		} else {
 			fmt.Println("  unarchiver.exe my_backup.zip")
 		}
@@ -42,24 +37,17 @@ Example:")
 	zipFile := os.Args[1]
 	destFolder := "_unzip"
 
-	fmt.Printf("Extracting: %s
-", zipFile)
-	fmt.Printf("Destination: %s
-", destFolder)
+	fmt.Printf("Extracting: %s\n", zipFile)
+	fmt.Printf("Destination: %s\n", destFolder)
 
 	err := unzip(zipFile, destFolder)
 	if err != nil {
-		fmt.Printf("
-Extraction failed: %v
-", err)
+		fmt.Printf("\nExtraction failed: %v\n", err)
 		os.Exit(1)
 	}
 
 	finalPath, _ := filepath.Abs(destFolder)
-	fmt.Printf("
-Successfully extracted to:
-%s
-", finalPath)
+	fmt.Printf("\nSuccessfully extracted to:\n%s\n", finalPath)
 }
 
 func unzip(src string, dest string) error {
@@ -70,13 +58,14 @@ func unzip(src string, dest string) error {
 	defer r.Close()
 
 	for _, f := range r.File {
-		// Securely join paths and ensure no directory traversal
 		fpath := filepath.Join(dest, f.Name)
-		if !strings.HasPrefix(fpath, filepath.Clean(dest)+string(os.PathSeparator)) {
+		
+		// Check for ZipSlip vulnerability
+		if !strings.HasPrefix(fpath, filepath.Clean(dest)+string(os.PathSeparator)) && fpath != filepath.Clean(dest) {
 			return fmt.Errorf("illegal file path: %s", fpath)
 		}
 
-		fmt.Printf("Extracting: %-60s", truncateString(f.Name, 60))
+		fmt.Printf("\rExtracting: %-60s", truncateString(f.Name, 60))
 
 		if f.FileInfo().IsDir() {
 			os.MkdirAll(fpath, os.ModePerm)
