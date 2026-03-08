@@ -20,6 +20,9 @@ go build -o archiver.exe archiver.go
 echo Compiling Unarchiver (unarchiver.go) to unarchiver.exe...
 go build -o unarchiver.exe unarchiver.go
 
+echo Compiling Database Manager (db_manager.go) to db_manager.exe...
+go build -o db_manager.exe db_manager.go
+
 echo.
 if %ERRORLEVEL% EQU 0 (
     echo Build Successful!
