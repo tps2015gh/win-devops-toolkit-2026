@@ -68,9 +68,11 @@ type FirewallProduct struct {
 // Result struct
 type SystemInfo struct {
 	CPU struct {
-		Name  string `json:"name"`
-		Cores uint32 `json:"cores"`
-		Speed uint32 `json:"speed_mhz"`
+		Name           string `json:"name"`
+		Sockets        uint32 `json:"sockets"`
+		CoresPerSocket uint32 `json:"cores_per_socket"`
+		TotalCores     uint32 `json:"total_cores"`
+		Speed          uint32 `json:"speed_mhz"`
 	} `json:"cpu"`
 	Memory struct {
 		PhysicalTotalGB float64 `json:"physical_total_gb"`
@@ -142,7 +144,12 @@ func main() {
 		if err := wmi.Query(wmi.CreateQuery(&dst, ""), &dst); err == nil && len(dst) > 0 {
 			mu.Lock()
 			info.CPU.Name = dst[0].Name
-			info.CPU.Cores = dst[0].NumberOfCores
+			info.CPU.Sockets = uint32(len(dst))
+			info.CPU.CoresPerSocket = dst[0].NumberOfCores
+			info.CPU.TotalCores = 0
+			for _, p := range dst {
+				info.CPU.TotalCores += p.NumberOfCores
+			}
 			info.CPU.Speed = dst[0].MaxClockSpeed
 			mu.Unlock()
 		}
@@ -228,7 +235,8 @@ func main() {
 	var buf bytes.Buffer
 	buf.WriteString("=== System Information ===\n")
 	buf.WriteString(fmt.Sprintf("OS: %s (Version: %s, Build: %s)\n", info.OS.Name, info.OS.Version, info.OS.Build))
-	buf.WriteString(fmt.Sprintf("CPU: %s (%d Cores, %d MHz)\n", info.CPU.Name, info.CPU.Cores, info.CPU.Speed))
+	buf.WriteString(fmt.Sprintf("CPU: %s (%d Sockets, %d Cores/Socket, %d Total Cores, %d MHz)\n", 
+		info.CPU.Name, info.CPU.Sockets, info.CPU.CoresPerSocket, info.CPU.TotalCores, info.CPU.Speed))
 	buf.WriteString(fmt.Sprintf("RAM: Total: %.2f GB, Free: %.2f GB, Load: %d%%\n", info.Memory.PhysicalTotalGB, info.Memory.FreePhysicalGB, info.Memory.LoadPercentage))
 	buf.WriteString(fmt.Sprintf("Virtual RAM: Total: %.2f GB, Free: %.2f GB\n", info.Memory.TotalVirtualGB, info.Memory.FreeVirtualGB))
 
