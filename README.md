@@ -1,4 +1,4 @@
-🌐 **Languages:** [English] | [**ภาษาไทย (Thai)**](./README.th.md)
+🌐 **Languages:** [English] | [**ภาษาไทย (Thai)**](./README.th.md) | [**简体中文 (Chinese)**](./README.zh.md)
 
 # win-audit-2026 (abcd-setup-server)
 

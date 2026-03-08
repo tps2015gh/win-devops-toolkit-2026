@@ -1,0 +1,69 @@
+🌐 **语言:** [**English**](./README.md) | [**ภาษาไทย (Thai)**](./README.th.md) | [简体中文]
+
+# win-audit-2026 (abcd-setup-server)
+
+一套基于 Go 语言开发的强大 Windows 环境发现与审计工具包。该工具集专为系统管理员和开发人员设计，旨在快速审计 Windows Server/11 实例及 XAMPP 安装情况。
+
+---
+
+### 👨‍💻 作者与智能助手 (Author & Intelligent Assistant)
+- **首席开发人员与所有者:** **tps2015gh** (人类)
+- **智能助手:** **Gemini AI** (CLI 代理)
+
+**关于著作权的法律声明:** 本项目由 **tps2015gh** 独立拥有并享有全部权利。Gemini AI 作为高级开发工具和智能助手，在项目所有者的直接指示和监督下提供实现支持和技术建议。所有知识产权、版权和最终架构决策均归属于人类作者。
+
+---
+
+## 🚀 核心功能
+
+### 1. 系统信息采集器 (`system_info.exe`)
+- **内存:** 通过 Windows `syscall` 获取高精度 RAM 信息（总量、剩余、负载）。
+- **CPU:** 详细的处理器规格和核心计数。
+- **存储:** 逻辑磁盘分析（总量/剩余/已用空间、文件系统）。
+- **操作系统:** 版本和生成 (Build) 标识。
+- **安全:** 通过 WMI 检测活跃的杀毒软件和防火墙产品。
+- **网络:** 完整的适配器配置，包括 IP 地址和 DNS 搜索顺序。
+
+### 2. XAMPP 生态扫描器 (`xampp_collector.exe`)
+- **发现:** 自动检测 `C:`、`D:` 和 `E:` 盘上的 `xampp*` 目录。
+- **容量统计:** 计算 XAMPP 总磁盘占用及特定的 `htdocs` 文件夹大小。
+- **版本审计:** 通过直接查询二进制文件提取精确的 **PHP** 和 **MariaDB/MySQL** 版本。
+- **输出:** 将结果以结构化 JSON 和易于阅读的 TXT 格式保存至 `./output/` 目录。
+
+### 3. Windows 补丁采集器 (`patch_collector.exe`)
+- **审计:** 使用 PowerShell `Get-HotFix` 命令获取所有已安装的 Windows 更新和热补丁。
+- **详情:** 包括 HotFixID (KB 编号)、描述、安装日期和安装人信息。
+- **输出:** 以 JSON 和 TXT 格式保存结果，用于审计合规。
+
+### 4. Windows 防火墙审计器 (`firewall_collector.exe`)
+- **发现:** 扫描并列出所有活动（启用）的 Windows 防火墙规则。
+- **详情:** 提供每个规则的协议 (TCP/UDP)、本地端口、动作 (Allow/Block) 以及特定的程序路径。
+- **洞察:** 帮助识别开放端口以及出厂默认与自定义应用程序规则。
+- **输出:** 将结果以 JSON 和 TXT 格式保存至 `./output/` 目录。
+
+### 5. Unicode 压缩归档器 (`archiver.exe`)
+- **功能:** 专为解决 Windows 自带压缩工具不支持泰文、中文等 Unicode 字符的问题而设计。
+- **详情:** 请参阅 [**README.archiver.md**](./README.archiver.md) 获取详细文档。
+
+---
+
+## 🛠️ 使用方法
+
+### 编译 (Build)
+要将源代码编译为独立的 Windows 可执行文件：
+```powershell
+.\build.bat
+```
+
+### 运行 (Run)
+1. 运行 `system_info.exe` 进行常规系统审计。
+2. 运行 `xampp_collector.exe` 进行 Web 服务器发现。
+3. 在 `./output/` 目录中查看详细报告。
+
+---
+
+## 📄 许可证 (License)
+本项目采用 **MIT 许可证**。版权所有者为 **tps2015gh**。详情请参阅 `LICENSE` 文件。
+
+---
+*由 tps2015gh 在 Gemini AI 的协助下开发 - 2024*
