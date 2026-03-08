@@ -58,7 +58,7 @@ func main() {
 		fmt.Println("3. Install New Distro (with Disk Check)")
 		fmt.Println("4. Remove (Unregister) Distro")
 		fmt.Println("5. Login to Distro")
-		fmt.Println("6. Install Dev Tools (Nano, Python, OpenCode AI) to Distro")
+		fmt.Println("6. Install Dev Tools (Git, Nano, Python, Gemini-CLI, OpenCode AI)")
 		fmt.Println("7. System Disk Summary")
 		fmt.Println("8. Exit")
 		fmt.Print("Select (1-8): ")
@@ -269,7 +269,7 @@ func installToolsToDistro(reader *bufio.Reader) {
 		return
 	}
 
-	fmt.Println("\nSelect a distribution to install Dev Tools (Nano, Python3, OpenCode AI):")
+	fmt.Println("\nSelect a distribution to install Dev Tools (Git, Nano, Python, Gemini-CLI, OpenCode AI):")
 	for i, d := range distros {
 		fmt.Printf("[%d] %s\n", i+1, d)
 	}
@@ -289,26 +289,39 @@ func installToolsToDistro(reader *bufio.Reader) {
 	fmt.Printf("\nInstalling tools to %s...\n", selected)
 
 	script := `
-	# 1. Install Basic Tools (Nano, Python, Curl)
+	# 1. Install Basic Tools (Git, Nano, Python, Curl, Nodejs/NPM)
+	echo "Phase 1: Installing system packages..."
 	if command -v apt-get >/dev/null; then
 		echo "Detected Debian/Ubuntu (apt)..."
-		sudo apt-get update && sudo apt-get install -y nano python3 python3-pip curl
+		sudo apt-get update && sudo apt-get install -y git nano python3 python3-pip curl nodejs npm
 	elif command -v pacman >/dev/null; then
 		echo "Detected Arch Linux (pacman)..."
-		sudo pacman -Sy --noconfirm nano python python-pip curl
+		sudo pacman -Sy --noconfirm git nano python python-pip curl nodejs npm
 	elif command -v dnf >/dev/null; then
 		echo "Detected Fedora/RHEL (dnf)..."
-		sudo dnf install -y nano python3 python3-pip curl
+		sudo dnf install -y git nano python3 python3-pip curl nodejs npm
 	elif command -v zypper >/dev/null; then
 		echo "Detected openSUSE (zypper)..."
-		sudo zypper install -y nano python3 curl
+		sudo zypper install -y git nano python3 curl nodejs npm
 	else
-		echo "Could not detect package manager. Please install nano, python, and curl manually."
+		echo "Could not detect package manager. Please install git, nano, python, curl, and nodejs manually."
 	fi
 
-	# 2. Install OpenCode (AI Agent Tool)
-	echo "Installing OpenCode AI Agent..."
-	curl -fsSL https://opencode.ai/install | bash
+	# 2. Install Gemini-CLI (via NPM)
+	echo "Phase 2: Installing Gemini CLI..."
+	if command -v npm >/dev/null; then
+		sudo npm install -g @google/gemini-cli
+	else
+		echo "NPM not found. Skipping Gemini CLI installation."
+	fi
+
+	# 3. Install OpenCode (AI Agent Tool)
+	echo "Phase 3: Installing OpenCode AI Agent..."
+	if command -v curl >/dev/null; then
+		curl -fsSL https://opencode.ai/install | bash
+	else
+		echo "Curl not found. Skipping OpenCode installation."
+	fi
 	`
 	
 	cmd := exec.Command("wsl", "-d", selected, "bash", "-c", script)
