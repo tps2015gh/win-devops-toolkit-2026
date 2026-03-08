@@ -41,6 +41,11 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 - **Insight:** Helps identify open ports and factory-default vs. custom application rules.
 - **Output:** Saves results in JSON and TXT formats in `./output/`.
 
+### 5. Unicode Archiver & Unarchiver (`archiver.exe` & `unarchiver.exe`)
+- **Problem Solver:** Fixes the "characters that cannot be used in compressed folders" issue on Windows (supporting Thai, Chinese, etc.).
+- **Interactive Unarchive:** `unarchiver.exe` provides an interactive menu to select and extract ZIP files to auto-incrementing folders (`_unzip01`, `_unzip02`...).
+- **Details:** See the [**Archiver Documentation**](./README.archiver.md) for full usage instructions.
+
 ---
 
 ## 🛠️ Usage

@@ -41,9 +41,10 @@
 - **洞察:** 帮助识别开放端口以及出厂默认与自定义应用程序规则。
 - **输出:** 将结果以 JSON 和 TXT 格式保存至 `./output/` 目录。
 
-### 5. Unicode 压缩归档器 (`archiver.exe`)
-- **功能:** 专为解决 Windows 自带压缩工具不支持泰文、中文等 Unicode 字符的问题而设计。
-- **详情:** 请参阅 [**README.archiver.md**](./README.archiver.md) 获取详细文档。
+### 5. Unicode 压缩与解压工具 (`archiver.exe` & `unarchiver.exe`)
+- **解决痛点:** 修复了 Windows 自带工具不支持泰文、中文等 Unicode 字符的问题。
+- **交互式解压:** `unarchiver.exe` 提供交互菜单，支持选择 ZIP 文件并自动解压到递增文件夹（`_unzip01`, `_unzip02`...）。
+- **详情:** 请参阅 [**压缩工具文档**](./README.archiver.md) 获取详细使用说明。
 
 ---
 
