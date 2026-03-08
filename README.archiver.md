@@ -20,7 +20,7 @@ archiver.exe <folder_name>
 ```
 
 ### Unarchive (Restore)
-To extract a ZIP file into the `_unzip` folder:
+To extract a ZIP file into an auto-incrementing folder (e.g., `_unzip01`, `_unzip02`...):
 ```cmd
 unarchiver.exe <zip_file_name>
 ```
@@ -43,7 +43,7 @@ archiver.exe <ชื่อโฟลเดอร์>
 ```
 
 ### วิธีแตกไฟล์ (Restore)
-เพื่อแตกไฟล์ Zip ไปยังโฟลเดอร์ `_unzip`:
+เพื่อแตกไฟล์ Zip ไปยังโฟลเดอร์แบบรันเลขให้อัตโนมัติ (เช่น `_unzip01`, `_unzip02`...):
 ```cmd
 unarchiver.exe <ชื่อไฟล์_zip>
 ```
@@ -66,7 +66,7 @@ archiver.exe <文件夹名称>
 ```
 
 ### 还原文件 (Restore)
-将 ZIP 文件解压到 `_unzip` 文件夹中：
+将 ZIP 文件解压到自动递增的文件夹中（例如 `_unzip01`、`_unzip02` 等）：
 ```cmd
 unarchiver.exe <zip_文件名>
 ```

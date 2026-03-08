@@ -16,11 +16,9 @@ func main() {
 
 	var selectedZip string
 
-	// Check if a zip file was passed as an argument
 	if len(os.Args) >= 2 {
 		selectedZip = os.Args[1]
 	} else {
-		// Interactive Mode
 		fmt.Println("Unarchiver - Robust Unicode-aware Extraction Tool")
 		fmt.Println("\nAvailable ZIP files in this folder:")
 		
@@ -50,7 +48,7 @@ func main() {
 		selectedZip = zips[choice-1]
 	}
 
-	destFolder := "_unzip"
+	destFolder := getNextUnzipFolder()
 
 	fmt.Printf("\nExtracting: %s\n", selectedZip)
 	fmt.Printf("Destination: %s\n", destFolder)
@@ -68,6 +66,16 @@ func main() {
 	bufio.NewReader(os.Stdin).ReadString('\n')
 }
 
+func getNextUnzipFolder() string {
+	for i := 1; i <= 99; i++ {
+		folderName := fmt.Sprintf("_unzip%02d", i)
+		if _, err := os.Stat(folderName); os.IsNotExist(err) {
+			return folderName
+		}
+	}
+	return "_unzip_latest" // Fallback if 99 folders exist
+}
+
 func unzip(src string, dest string) error {
 	r, err := zip.OpenReader(src)
 	if err != nil {
@@ -78,7 +86,6 @@ func unzip(src string, dest string) error {
 	for _, f := range r.File {
 		fpath := filepath.Join(dest, f.Name)
 		
-		// Check for ZipSlip vulnerability
 		if !strings.HasPrefix(fpath, filepath.Clean(dest)+string(os.PathSeparator)) && fpath != filepath.Clean(dest) {
 			return fmt.Errorf("illegal file path: %s", fpath)
 		}
