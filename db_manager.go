@@ -41,6 +41,9 @@ func main() {
 		user = parts[0]
 	}
 
+	// 3. Test Connection
+	testConnection(user, pass)
+
 	for {
 		fmt.Println("\nChoose action:")
 		fmt.Println("1. List Databases & Backup")
@@ -106,6 +109,24 @@ func setupBinaries() {
 	
 	fmt.Printf("Using mysql:     %s\n", mysqlPath)
 	fmt.Printf("Using mysqldump: %s\n", mysqldumpPath)
+}
+
+func testConnection(user, pass string) {
+	fmt.Printf("\nTesting connection for user '%s'...\n", user)
+	args := []string{"-u", user}
+	if pass != "" {
+		args = append(args, "-p"+pass)
+	}
+	args = append(args, "-e", "SELECT 1;")
+
+	cmd := exec.Command(mysqlPath, args...)
+	err := cmd.Run()
+	if err != nil {
+		fmt.Printf("[!] WARNING: Connection failed! Access denied or database server unreachable.\n")
+		fmt.Printf("    (Verify your credentials and ensure the MariaDB service is running)\n")
+	} else {
+		fmt.Println("[+] Connection successful!")
+	}
 }
 
 func selectDatabase(user, pass string) string {
