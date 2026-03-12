@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "database": {
+      "command": "C:\\dev\\abcd_setup_server\\db_mcp_server.exe"
+    }
+  }
+}

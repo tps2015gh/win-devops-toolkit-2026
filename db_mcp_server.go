@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 )
