@@ -1,4 +1,4 @@
-🌐 **ภาษา:** [**English**](./README.md) | [ภาษาไทย] | [**简体中文 (Chinese)**](./README.zh.md) | [**เครื่องมือบีบอัด (Archiver)**](./README.archiver.md) | [**ตัวจัดการฐานข้อมูล (DB Manager)**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) / [**ไทย**](./README.db_mcp.th.md) | [**ตัวจัดการ WSL**](./README.wsl.md)
+🌐 **ภาษา:** [**English**](./README.md) | [ภาษาไทย] | [**简体中文 (Chinese)**](./README.zh.md) | [**เครื่องมือบีบอัด (Archiver)**](./README.archiver.md) | [**ตัวจัดการฐานข้อมูล (DB Manager)**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) / [**ไทย**](./README.db_mcp.th.md) | [**คู่มือ Qwen MCP**](./README.qwen_mcp.md) | [**ตัวจัดการ WSL**](./README.wsl.md)
 
 # win-audit-2026 (abcd-setup-server)
 
@@ -65,6 +65,7 @@
 - **Database Switching:** แสดงรายการฐานข้อมูลและเปลี่ยนระหว่างฐานข้อมูลได้แบบไดนามิก
 - **Read-Only Security:** อนุญาตเฉพาะคำสั่ง SELECT; ไม่มีการเขียนข้อมูล
 - **รายละเอียด:** ดูคู่มือการใช้งานได้ที่ [**เอกสาร DB MCP Server (ภาษาอังกฤษ)**](./README.db_mcp.md) หรือ [**ภาษาไทย**](./README.db_mcp.th.md)
+- **คู่มือ Qwen Code:** [**วิธีใช้งานกับ Qwen CLI**](./README.qwen_mcp.md)
 
 ---
 
