@@ -1,4 +1,4 @@
-🌐 **ภาษา:** [**English**](./README.md) | [ภาษาไทย] | [**简体中文 (Chinese)**](./README.zh.md) | [**เครื่องมือบีบอัด (Archiver)**](./README.archiver.md) | [**ตัวจัดการฐานข้อมูล (DB Manager)**](./README.db.md) | [**ตัวจัดการ WSL**](./README.wsl.md)
+🌐 **ภาษา:** [**English**](./README.md) | [ภาษาไทย] | [**简体中文 (Chinese)**](./README.zh.md) | [**เครื่องมือบีบอัด (Archiver)**](./README.archiver.md) | [**ตัวจัดการฐานข้อมูล (DB Manager)**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) / [**ไทย**](./README.db_mcp.th.md) | [**ตัวจัดการ WSL**](./README.wsl.md)
 
 # win-audit-2026 (abcd-setup-server)
 
@@ -57,6 +57,14 @@
 - **ตรวจสอบไลบรารี:** ตรวจสอบไลบรารี Python เช่น Pandas และ Tkinter
 - **รายงานที่สวยงาม:** สร้างรายงานรูปแบบ JSON และ HTML ที่อ่านง่ายและโต้ตอบได้ในโฟลเดอร์ `./output/`
 - **การติดตามความคืบหน้า:** แสดงสถานะการทำงานแบบเรียลไทม์ระหว่างการค้นหา
+
+### 8. Database MCP Server (`db_mcp_server.exe`)
+- **AI Integration:** เซิร์ฟเวอร์ Model Context Protocol (MCP) สำหรับ AI Assistant เพื่อเข้าถึงฐานข้อมูลโดยตรง
+- **Schema Inspection:** แสดงรายการฐานข้อมูล ตาราง คอลัมน์ Index และ Foreign Key
+- **Complex Queries:** รองรับ WHERE, ORDER BY, GROUP BY และ aggregations (COUNT, SUM, AVG, MIN, MAX)
+- **Database Switching:** แสดงรายการฐานข้อมูลและเปลี่ยนระหว่างฐานข้อมูลได้แบบไดนามิก
+- **Read-Only Security:** อนุญาตเฉพาะคำสั่ง SELECT; ไม่มีการเขียนข้อมูล
+- **รายละเอียด:** ดูคู่มือการใช้งานได้ที่ [**เอกสาร DB MCP Server (ภาษาอังกฤษ)**](./README.db_mcp.md) หรือ [**ภาษาไทย**](./README.db_mcp.th.md)
 
 ---
 

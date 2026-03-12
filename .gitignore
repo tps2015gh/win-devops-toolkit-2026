@@ -2,3 +2,5 @@
 *.zip
 output/
 _unzip*
+checksums.txt
+*.sql

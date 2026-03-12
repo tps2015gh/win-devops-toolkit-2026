@@ -1,4 +1,4 @@
-🌐 **Languages:** [English] | [**ภาษาไทย (Thai)**](./README.th.md) | [**简体中文 (Chinese)**](./README.zh.md) | [**Archiver Tool**](./README.archiver.md) | [**DB Manager**](./README.db.md) | [**WSL Manager**](./README.wsl.md)
+🌐 **Languages:** [English] | [**ภาษาไทย (Thai)**](./README.th.md) | [**简体中文 (Chinese)**](./README.zh.md) | [**Archiver Tool**](./README.archiver.md) | [**DB Manager**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) / [**ไทย**](./README.db_mcp.th.md) | [**WSL Manager**](./README.wsl.md)
 
 # win-audit-2026 (abcd-setup-server)
 
@@ -57,6 +57,14 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 - **Library Check:** Detects Python libraries like Pandas and Tkinter.
 - **Rich Reporting:** Generates a structured JSON and a beautiful, interactive HTML report in `./output/`.
 - **Progress Tracking:** Shows real-time status updates during discovery.
+
+### 8. Database MCP Server (`db_mcp_server.exe`)
+- **AI Integration:** Model Context Protocol (MCP) server for AI assistants to query databases directly.
+- **Schema Inspection:** List databases, tables, columns, indexes, and foreign keys.
+- **Complex Queries:** Support for WHERE, ORDER BY, GROUP BY, aggregations (COUNT, SUM, AVG, MIN, MAX).
+- **Database Switching:** List available databases and switch between them dynamically.
+- **Read-Only Security:** Only SELECT queries allowed; no write operations.
+- **Details:** See the [**DB MCP Server Documentation**](./README.db_mcp.md) for configuration and usage.
 
 ---
 
