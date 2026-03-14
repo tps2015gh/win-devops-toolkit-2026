@@ -1,0 +1,197 @@
+================================================================================
+                    win-audit-2026 v1.1.0 - Complete Audit Suite
+                              Release Notes
+================================================================================
+
+Release Tag: v1.1.0
+Release Date: March 15, 2026
+Previous Release: v1.0.0-db-mcp (March 12, 2026)
+
+================================================================================
+🎉 WHAT'S NEW IN v1.1.0
+================================================================================
+
+This release includes the complete suite of Windows audit and management tools
+built with Go.
+
+NEW IN THIS RELEASE:
+--------------------
+★ Go Diff Packer - Directory comparison and deployment tool
+  • Compare two directories for changed/new files
+  • Size-first comparison with SHA-256 hash verification
+  • JSON output mode for AI/automation integration
+  • Interactive deploy mode with replace confirmation
+  • Auto-incrementing output folders (_outdiff_01, _outdiff_02, etc.)
+
+================================================================================
+📦 INCLUDED TOOLS
+================================================================================
+
+| Tool                        | Description                                |
+|-----------------------------|--------------------------------------------|
+| system_info.exe             | Memory, CPU, Storage, OS, Security, Network|
+| xampp_collector.exe         | XAMPP discovery and version auditing       |
+| patch_collector.exe         | Windows Update/HotFix collector            |
+| firewall_collector.exe      | Windows Firewall rules auditor             |
+| archiver.exe                | Unicode-aware ZIP archiver (Thai, Chinese) |
+| unarchiver.exe              | Interactive ZIP extractor                  |
+| db_manager.exe              | MariaDB backup, restore, and audit         |
+| db_mcp_server.exe           | Database MCP server for AI assistants      |
+| dev_tool_collector.exe      | Dev tools discovery (Go, Rust, Python...)  |
+| wsl_manager.exe             | WSL management utility                     |
+| go-diff-packer.exe          | Directory diff and deployment tool [NEW!]  |
+
+================================================================================
+📥 INSTALLATION
+================================================================================
+
+1. Download all .exe files from this release
+2. Place them in a folder (e.g., C:\tools\win-audit-2026)
+3. Run any tool directly - no installation required!
+
+All tools are portable executables with no dependencies.
+
+================================================================================
+🔧 REQUIREMENTS
+================================================================================
+
+• Windows 10/11 or Windows Server 2016+
+• Go 1.21.1+ (only if building from source)
+• Administrator privileges (for some tools)
+
+================================================================================
+📖 QUICK START GUIDE
+================================================================================
+
+System Audit:
+    .\system_info.exe
+
+XAMPP Discovery:
+    .\xampp_collector.exe
+
+Directory Comparison:
+    .\go-diff-packer.exe C:\original C:\modified
+
+Directory Comparison (JSON output):
+    .\go-diff-packer.exe -json C:\v1 C:\v2 > changes.json
+
+Interactive Deploy:
+    .\go-diff-packer.exe --deploy
+
+Database Backup:
+    .\db_manager.exe backup
+
+Dev Tools Audit:
+    .\dev_tool_collector.exe
+
+================================================================================
+📚 DOCUMENTATION LINKS
+================================================================================
+
+• Main README:        https://github.com/tps2015gh/win-audit-2026/blob/main/README.md
+• Go Diff Packer:     https://github.com/tps2015gh/win-audit-2026/blob/main/README.go-diff-packer.md
+• Usage Guide:        https://github.com/tps2015gh/win-audit-2026/blob/main/README.go-diff-packer.usage.md
+• DB Manager:         https://github.com/tps2015gh/win-audit-2026/blob/main/README.db.md
+• DB MCP Server:      https://github.com/tps2015gh/win-audit-2026/blob/main/README.db_mcp.md
+• Archiver Tool:      https://github.com/tps2015gh/win-audit-2026/blob/main/README.archiver.md
+
+================================================================================
+👨‍💻 AUTHOR & DEVELOPMENT TEAM
+================================================================================
+
+Lead Developer / Owner:     tps2015gh (Human)
+Programming & Design:       Qwen Code (under supervision of tps2015gh)
+Testing:                    tps2015gh, Qwen Code
+Intelligent Assistant:      Qwen Code (CLI Agent)
+
+DESIGN & IMPLEMENTATION STATEMENT:
+This program suite was designed and coded by Qwen Code under the supervision,
+direction, and instruction of tps2015gh. All feature requirements, architectural
+decisions, code reviews, and final approvals were directed by the human project
+owner. Qwen Code served as an intelligent programming assistant, implementing
+the vision and specifications provided by tps2015gh.
+
+LEGAL NOTE ON AUTHORSHIP:
+This project is authored and owned exclusively by tps2015gh. Qwen Code acted as
+a sophisticated development tool and intelligent assistant, providing
+implementation support, code fixes, and technical suggestions under the direct
+instruction and oversight of the project owner. All intellectual property,
+copyright, and final architectural decisions reside with the human author.
+
+================================================================================
+📄 LICENSE
+================================================================================
+
+MIT License
+
+Copyright (c) 2026 tps2015gh
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+📝 CHANGELOG
+================================================================================
+
+v1.1.0 (March 15, 2026)
+-----------------------
+NEW:
+  + Go Diff Packer tool added
+  + Directory comparison with size and SHA-256 hash verification
+  + JSON output mode for AI/automation
+  + Interactive deploy mode with replace confirmation
+  + Auto-incrementing output folders
+  + Verbose mode for detailed output
+  + Summary statistics (compared/copied/skipped/errors)
+
+FIXED:
+  * Optimized hash calculation (skips when size differs)
+  * Improved error handling for file operations
+  * Better user feedback during operations
+
+v1.0.0-db-mcp (March 12, 2026)
+------------------------------
+  + Database MCP Server for AI assistants
+  + Schema inspection and complex queries
+  + Read-only database access
+
+v1.0.1 (March 08, 2026) - Pre-release
+-------------------------------------
+  + Various tools and improvements
+
+================================================================================
+🔗 GITHUB REPOSITORY
+================================================================================
+
+Repository:     https://github.com/tps2015gh/win-audit-2026
+Issues:         https://github.com/tps2015gh/win-audit-2026/issues
+Discussions:    https://github.com/tps2015gh/win-audit-2026/discussions
+
+================================================================================
+📧 SUPPORT
+================================================================================
+
+For questions, issues, or feature requests, please use GitHub Issues:
+https://github.com/tps2015gh/win-audit-2026/issues
+
+================================================================================
+
+Released: March 15, 2026
+Developed by tps2015gh with Qwen Code Assistance - 2026
+
+================================================================================
