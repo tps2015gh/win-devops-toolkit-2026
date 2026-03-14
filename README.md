@@ -1,4 +1,4 @@
-🌐 **Languages:** [English] | [**ภาษาไทย (Thai)**](./README.th.md) | [**简体中文 (Chinese)**](./README.zh.md) | [**Archiver Tool**](./README.archiver.md) | [**DB Manager**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) / [**ไทย**](./README.db_mcp.th.md) | [**Qwen MCP Guide**](./README.qwen_mcp.md) | [**WSL Manager**](./README.wsl.md)
+🌐 **Languages:** [English] | [**ภาษาไทย (Thai)**](./README.th.md) | [**简体中文 (Chinese)**](./README.zh.md) | [**Archiver Tool**](./README.archiver.md) | [**DB Manager**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) / [**ไทย**](./README.db_mcp.th.md) | [**Qwen MCP Guide**](./README.qwen_mcp.md) | [**WSL Manager**](./README.wsl.md) | [**Go Diff Packer**](./README.go-diff-packer.md) / [**Usage**](./README.go-diff-packer.usage.md)
 
 # win-audit-2026 (abcd-setup-server)
 
@@ -8,9 +8,10 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 
 ### 👨‍💻 Author & Intelligent Assistant
 - **Lead Developer & Owner:** **tps2015gh** (Human)
-- **Intelligent Assistant:** **Gemini AI** (CLI Agent)
+- **Programming & Testing Team:** tps2015gh, Qwen Code
+- **Intelligent Assistant:** **Qwen Code** (CLI Agent)
 
-**Legal Note on Authorship:** This project is authored and owned exclusively by **tps2015gh**. Gemini AI acted as a sophisticated development tool and intelligent assistant, providing implementation support and technical suggestions under the direct instruction and oversight of the project owner. All intellectual property, copyright, and final architectural decisions reside with the human author.
+**Legal Note on Authorship:** This project is authored and owned exclusively by **tps2015gh**. Qwen Code acted as a sophisticated development tool and intelligent assistant, providing implementation support and technical suggestions under the direct instruction and oversight of the project owner. All intellectual property, copyright, and final architectural decisions reside with the human author.
 
 ---
 
@@ -58,7 +59,15 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 - **Rich Reporting:** Generates a structured JSON and a beautiful, interactive HTML report in `./output/`.
 - **Progress Tracking:** Shows real-time status updates during discovery.
 
-### 8. Database MCP Server (`db_mcp_server.exe`)
+### 8. Go Diff Packer (`go-diff-packer.exe`)
+- **Directory Comparison**: Compares two directories and identifies new/modified files.
+- **Smart Detection**: Uses size comparison first, then SHA-256 hash for accuracy.
+- **Differential Backup**: Copies only changed files to auto-incrementing output folders (`_outdiff_01`, `_outdiff_02`...).
+- **Deployment Ready**: Perfect for deploying only changed files to production servers.
+- **Summary Statistics**: Shows files compared, copied, skipped, and errors.
+- **Details:** See the [**Go Diff Packer Documentation**](./README.go-diff-packer.md) and [**Usage Guide**](./README.go-diff-packer.usage.md) for full usage instructions.
+
+### 9. Database MCP Server (`db_mcp_server.exe`)
 - **AI Integration:** Model Context Protocol (MCP) server for AI assistants to query databases directly.
 - **Schema Inspection:** List databases, tables, columns, indexes, and foreign keys.
 - **Complex Queries:** Support for WHERE, ORDER BY, GROUP BY, aggregations (COUNT, SUM, AVG, MIN, MAX).
@@ -88,6 +97,7 @@ To compile the source code into standalone Windows executables:
 - **Compiler Version:** **Go 1.21.1** (Target: Windows/AMD64)
 - **Dependencies:** Uses WMI and Windows syscalls for high-fidelity discovery.
 - **Compatibility:** Optimized for Windows Server 2016, 2019, 2022, and Windows 10/11.
+- **Tools Included:** System Info, XAMPP Collector, Patch Collector, Firewall Collector, Archiver, DB Manager, Dev Tool Collector, Go Diff Packer, DB MCP Server
 
 ---
 
@@ -95,4 +105,4 @@ To compile the source code into standalone Windows executables:
 This project is licensed under the **MIT License**. The copyright holder and owner is **tps2015gh**. See the `LICENSE` file for full details.
 
 ---
-*Developed by tps2015gh with Gemini AI Assistance - 2024*
+*Developed by tps2015gh with Qwen Code Assistance - 2024*

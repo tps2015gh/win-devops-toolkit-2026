@@ -4,3 +4,4 @@ output/
 _unzip*
 checksums.txt
 *.sql
+go-diff-packer/_outdiff_*/
