@@ -164,8 +164,8 @@ Done.
 | Role | Name |
 |------|------|
 | **Lead Developer / Owner** | **tps2015gh** (Human) |
-| **Programming Team** | tps2015gh, Qwen Code |
-| **Testing Team** | tps2015gh, Qwen Code |
+| **Programming & Design** | Qwen Code (under supervision of tps2015gh) |
+| **Testing** | tps2015gh, Qwen Code |
 | **Intelligent Assistant** | Qwen Code (CLI Agent) |
 
 ### Development History
@@ -174,6 +174,8 @@ Done.
 - **First Implementation**: Basic file comparison with hash verification
 - **Enhanced Version**: Added statistics, verbose mode, error handling
 - **Integration**: Added to abcd_setup_server project suite
+
+**Design & Implementation Statement:** This program was designed and coded by **Qwen Code** under the supervision, direction, and instruction of **tps2015gh**. All feature requirements, architectural decisions, code reviews, and final approvals were directed by the human project owner. Qwen Code served as an intelligent programming assistant, implementing the vision and specifications provided by tps2015gh.
 
 **Legal Note on Authorship:** This project is authored and owned exclusively by **tps2015gh**. Qwen Code acted as a sophisticated development tool and intelligent assistant, providing implementation support, code fixes, and technical suggestions under the direct instruction and oversight of the project owner. All intellectual property, copyright, and final architectural decisions reside with the human author.
 

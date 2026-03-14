@@ -286,4 +286,13 @@ echo Go Diff Packer built successfully!
 
 ---
 
+## 👨‍💻 Design & Development
+
+**Designed & Coded by:** Qwen Code  
+**Under Supervision & Direction of:** tps2015gh
+
+This program was designed and coded by **Qwen Code** under the supervision, direction, and instruction of **tps2015gh**. All feature requirements, architectural decisions, and final approvals were directed by the human project owner.
+
+---
+
 *Part of abcd_setup_server project - Developed by tps2015gh with Qwen Code Assistance*
