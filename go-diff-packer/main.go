@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"crypto/sha256"
 	"encoding/json"
 	"flag"
@@ -8,6 +9,9 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"sort"
+	"strconv"
+	"strings"
 )
 
 type stats struct {
@@ -37,15 +41,25 @@ type jsonOutput struct {
 func main() {
 	verbose := flag.Bool("v", false, "verbose output: show unchanged files")
 	jsonMode := flag.Bool("json", false, "output results as JSON (suppresses console output)")
+	deployMode := flag.Bool("deploy", false, "deploy mode: copy files from _outdiff folder to destination")
 	flag.Parse()
 
 	args := flag.Args()
+
+	// Deploy mode
+	if *deployMode {
+		runDeployMode()
+		return
+	}
+
+	// Compare mode
 	if len(args) < 2 {
 		if *jsonMode {
 			output := jsonOutput{Success: false, ErrorMessage: "Usage: go-diff-packer [--json] <original_dir> <modified_dir>"}
 			printJSON(output)
 		} else {
-			fmt.Println("Usage: go run main.go [-v] [--json] <original_dir> <modified_dir>")
+			fmt.Println("Usage: go-diff-packer [-v] [--json] <original_dir> <modified_dir>")
+			fmt.Println("       go-diff-packer --deploy")
 		}
 		return
 	}
@@ -224,6 +238,212 @@ func main() {
 		}
 		fmt.Println("Done.")
 	}
+}
+
+func runDeployMode() {
+	fmt.Println("=== Go Diff Packer - Deploy Mode ===\n")
+
+	// List all _outdiff folders
+	outDirs, err := listOutDiffDirs()
+	if err != nil {
+		fmt.Printf("Error listing output directories: %v\n", err)
+		os.Exit(1)
+	}
+
+	if len(outDirs) == 0 {
+		fmt.Println("No _outdiff folders found in current directory.")
+		os.Exit(0)
+	}
+
+	// Display list
+	fmt.Println("Available output directories:")
+	fmt.Println("-----------------------------")
+	for i, dir := range outDirs {
+		fileCount := countFiles(dir)
+		fmt.Printf("  %d. %s (%d files)\n", i+1, dir, fileCount)
+	}
+	fmt.Println()
+
+	// Get user selection
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Select output folder number (or 'q' to quit): ")
+	input, _ := reader.ReadString('\n')
+	input = strings.TrimSpace(input)
+
+	if strings.ToLower(input) == "q" {
+		fmt.Println("Cancelled.")
+		os.Exit(0)
+	}
+
+	num, err := strconv.Atoi(input)
+	if err != nil || num < 1 || num > len(outDirs) {
+		fmt.Println("Invalid selection.")
+		os.Exit(1)
+	}
+
+	selectedDir := outDirs[num-1]
+	fmt.Printf("\nSelected: %s\n", selectedDir)
+
+	// Get destination folder
+	fmt.Print("\nEnter destination folder path: ")
+	destDir, _ := reader.ReadString('\n')
+	destDir = strings.TrimSpace(destDir)
+
+	if destDir == "" {
+		fmt.Println("No destination folder specified.")
+		os.Exit(1)
+	}
+
+	// Validate destination
+	if _, err := os.Stat(destDir); os.IsNotExist(err) {
+		fmt.Printf("Destination folder does not exist: %s\n", destDir)
+		fmt.Print("Create it? (y/n): ")
+		create, _ := reader.ReadString('\n')
+		if strings.ToLower(strings.TrimSpace(create)) != "y" {
+			fmt.Println("Cancelled.")
+			os.Exit(0)
+		}
+		err = os.MkdirAll(destDir, 0755)
+		if err != nil {
+			fmt.Printf("Error creating destination folder: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Printf("Created: %s\n", destDir)
+	}
+
+	// Count files to deploy
+	filesToDeploy := listFiles(selectedDir)
+	if len(filesToDeploy) == 0 {
+		fmt.Println("\nNo files to deploy in selected folder.")
+		os.Exit(0)
+	}
+
+	// Check for existing files and ask once for replace confirmation
+	filesToReplace := []string{}
+	filesToCopy := []string{}
+
+	for _, file := range filesToDeploy {
+		destPath := filepath.Join(destDir, file)
+		if _, err := os.Stat(destPath); err == nil {
+			filesToReplace = append(filesToReplace, file)
+		} else {
+			filesToCopy = append(filesToCopy, file)
+		}
+	}
+
+	if len(filesToReplace) > 0 {
+		fmt.Printf("\n⚠️  %d file(s) will be replaced:\n", len(filesToReplace))
+		for _, file := range filesToReplace {
+			fmt.Printf("   - %s\n", file)
+		}
+		fmt.Print("\nConfirm replace? (y/n): ")
+		confirm, _ := reader.ReadString('\n')
+		if strings.ToLower(strings.TrimSpace(confirm)) != "y" {
+			fmt.Println("Cancelled.")
+			os.Exit(0)
+		}
+	}
+
+	// Deploy files
+	fmt.Println("\n--- Deploying ---")
+	copied := 0
+	replaced := 0
+	errors := 0
+
+	for _, file := range filesToDeploy {
+		srcPath := filepath.Join(selectedDir, file)
+		destPath := filepath.Join(destDir, file)
+
+		// Ensure destination directory exists
+		err := os.MkdirAll(filepath.Dir(destPath), 0755)
+		if err != nil {
+			fmt.Printf("[ERROR] %s: could not create directory: %v\n", file, err)
+			errors++
+			continue
+		}
+
+		// Check if replacing
+		isReplace := false
+		if _, err := os.Stat(destPath); err == nil {
+			isReplace = true
+		}
+
+		// Copy file
+		err = copyFile(srcPath, destPath)
+		if err != nil {
+			fmt.Printf("[ERROR] %s: copy failed: %v\n", file, err)
+			errors++
+		} else {
+			if isReplace {
+				fmt.Printf("[REPLACE] %s\n", file)
+				replaced++
+			} else {
+				fmt.Printf("[COPY] %s\n", file)
+				copied++
+			}
+		}
+	}
+
+	// Summary
+	fmt.Println("\n--- Deployment Summary ---")
+	fmt.Printf("Files copied:   %d\n", copied)
+	fmt.Printf("Files replaced: %d\n", replaced)
+	if errors > 0 {
+		fmt.Printf("Errors:         %d\n", errors)
+	}
+	fmt.Printf("Destination:    %s\n", destDir)
+	fmt.Println("Done.")
+}
+
+func listOutDiffDirs() ([]string, error) {
+	var dirs []string
+
+	entries, err := os.ReadDir(".")
+	if err != nil {
+		return nil, err
+	}
+
+	for _, entry := range entries {
+		if entry.IsDir() && strings.HasPrefix(entry.Name(), "_outdiff_") {
+			dirs = append(dirs, entry.Name())
+		}
+	}
+
+	// Sort by name (natural sort for _outdiff_01, _outdiff_02, etc.)
+	sort.Strings(dirs)
+
+	return dirs, nil
+}
+
+func listFiles(dir string) []string {
+	var files []string
+
+	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() {
+			relPath, _ := filepath.Rel(dir, path)
+			files = append(files, relPath)
+		}
+		return nil
+	})
+
+	return files
+}
+
+func countFiles(dir string) int {
+	count := 0
+	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() {
+			count++
+		}
+		return nil
+	})
+	return count
 }
 
 func printJSON(output jsonOutput) {

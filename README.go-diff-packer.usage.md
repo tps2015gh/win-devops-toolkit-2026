@@ -33,6 +33,57 @@ go run main.go -json C:\xampp\htdocs\app_v1 C:\xampp\htdocs\app_v2 > diff.json
 
 # JSON output to file for AI processing
 .\go-diff-packer.exe -json C:\v1 C:\v2 > changes.json
+
+# Deploy mode (interactive)
+.\go-diff-packer.exe --deploy
+```
+
+### Deploy Mode
+
+Deploy mode allows you to interactively select an `_outdiff_*` folder and copy files to a destination:
+
+```powershell
+# Start deploy mode
+.\go-diff-packer.exe --deploy
+
+# Interactive prompts:
+# 1. Select output folder number from list
+# 2. Enter destination folder path
+# 3. Confirm replacement if files exist (asked once)
+# 4. Files are copied with progress display
+```
+
+#### Deploy Mode Example
+
+```
+=== Go Diff Packer - Deploy Mode ===
+
+Available output directories:
+-----------------------------
+  1. _outdiff_01 (2 files)
+  2. _outdiff_02 (5 files)
+
+Select output folder number (or 'q' to quit): 1
+
+Selected: _outdiff_01
+
+Enter destination folder path: C:\xampp\htdocs\live
+
+⚠️  2 file(s) will be replaced:
+   - config.php
+   - index.php
+
+Confirm replace? (y/n): y
+
+--- Deploying ---
+[REPLACE] config.php
+[COPY] new_feature.php
+
+--- Deployment Summary ---
+Files copied:   1
+Files replaced: 2
+Destination:    C:\xampp\htdocs\live
+Done.
 ```
 
 ### JSON Output Example
@@ -129,8 +180,9 @@ Done.
 |--------|-------------|
 | `-v` | Verbose mode - shows unchanged files with `[OK]` marker |
 | `-json` | JSON output mode - outputs structured JSON instead of console text (for AI/automation) |
-| `<original_dir>` | Path to the original/reference directory (required) |
-| `<modified_dir>` | Path to the modified directory to compare (required) |
+| `--deploy` | Deploy mode - interactive deployment from _outdiff folder to destination |
+| `<original_dir>` | Path to the original/reference directory (required for compare mode) |
+| `<modified_dir>` | Path to the modified directory to compare (required for compare mode) |
 
 ---
 

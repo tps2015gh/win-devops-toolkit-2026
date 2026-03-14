@@ -21,6 +21,8 @@ A lightweight Go utility that compares two directories and copies only new or mo
 | **Summary Statistics** | Displays files compared, copied, skipped, and errors |
 | **Verbose Mode** | Optional `-v` flag to show unchanged files |
 | **JSON Output** | `-json` flag for AI/automation integration |
+| **Deploy Mode** | `--deploy` flag for interactive deployment to destination |
+| **Replace Confirmation** | Ask once before replacing existing files |
 | **Error Handling** | Graceful handling of permission and I/O errors |
 | **Cross-Platform** | Built with Go 1.21.1, runs on Windows/Linux/macOS |
 
