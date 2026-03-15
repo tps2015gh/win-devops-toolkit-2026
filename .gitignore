@@ -2,6 +2,7 @@
 *.zip
 output/
 _unzip*
+_outdiff_*/
 checksums.txt
 *.sql
 go-diff-packer/_outdiff_*/
