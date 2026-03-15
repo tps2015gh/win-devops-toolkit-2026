@@ -1,4 +1,4 @@
-🌐 **ภาษา:** [**English**](./README.md) | [ภาษาไทย] | [**简体中文 (Chinese)**](./README.zh.md) | [**เครื่องมือบีบอัด (Archiver)**](./README.archiver.md) | [**ตัวจัดการฐานข้อมูล (DB Manager)**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) / [**ไทย**](./README.db_mcp.th.md) | [**คู่มือ Qwen MCP**](./README.qwen_mcp.md) | [**ตัวจัดการ WSL**](./README.wsl.md) | [**การทดสอบ (E2E)**](./go-diff-packer/E2E_CLI_TESTING.md)
+🌐 **ภาษา:** [**English**](./README.md) | [ภาษาไทย] | [**简体中文 (Chinese)**](./README.zh.md) | [**เครื่องมือบีบอัด (Archiver)**](./README.archiver.md) | [**ตัวจัดการฐานข้อมูล (DB Manager)**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) / [**ไทย**](./README.db_mcp.th.md) | [**คู่มือ Qwen MCP**](./README.qwen_mcp.md) | [**ตัวจัดการ WSL**](./README.wsl.md) | [**การทดสอบ (E2E)**](./go-diff-packer/E2E_CLI_TESTING.md) | [**สรุปการเปลี่ยนแปลง v1.2.0**](./SUMMARY_OF_CHANGES_v1.2.0.md)
 
 # win-audit-2026 (abcd-setup-server)
 

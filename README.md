@@ -1,4 +1,4 @@
-🌐 **Languages:** [English] | [**ภาษาไทย (Thai)**](./README.th.md) | [**简体中文 (Chinese)**](./README.zh.md) | [**Archiver Tool**](./README.archiver.md) | [**DB Manager**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) / [**ไทย**](./README.db_mcp.th.md) | [**Qwen MCP Guide**](./README.qwen_mcp.md) | [**WSL Manager**](./README.wsl.md) | [**Go Diff Packer**](./README.go-diff-packer.md) / [**Usage**](./README.go-diff-packer.usage.md) / [**E2E Testing**](./go-diff-packer/E2E_CLI_TESTING.md)
+🌐 **Languages:** [English] | [**ภาษาไทย (Thai)**](./README.th.md) | [**简体中文 (Chinese)**](./README.zh.md) | [**Archiver Tool**](./README.archiver.md) | [**DB Manager**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) / [**ไทย**](./README.db_mcp.th.md) | [**Qwen MCP Guide**](./README.qwen_mcp.md) | [**WSL Manager**](./README.wsl.md) | [**Go Diff Packer**](./README.go-diff-packer.md) / [**Usage**](./README.go-diff-packer.usage.md) / [**E2E Testing**](./go-diff-packer/E2E_CLI_TESTING.md) / [**Changes v1.2.0**](./SUMMARY_OF_CHANGES_v1.2.0.md)
 
 # win-audit-2026 (abcd-setup-server)
 
