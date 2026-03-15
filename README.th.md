@@ -1,4 +1,4 @@
-🌐 **ภาษา:** [**English**](./README.md) | [ภาษาไทย] | [**简体中文 (Chinese)**](./README.zh.md) | [**เครื่องมือบีบอัด (Archiver)**](./README.archiver.md) | [**ตัวจัดการฐานข้อมูล (DB Manager)**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) / [**ไทย**](./README.db_mcp.th.md) | [**คู่มือ Qwen MCP**](./README.qwen_mcp.md) | [**ตัวจัดการ WSL**](./README.wsl.md)
+🌐 **ภาษา:** [**English**](./README.md) | [ภาษาไทย] | [**简体中文 (Chinese)**](./README.zh.md) | [**เครื่องมือบีบอัด (Archiver)**](./README.archiver.md) | [**ตัวจัดการฐานข้อมูล (DB Manager)**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) / [**ไทย**](./README.db_mcp.th.md) | [**คู่มือ Qwen MCP**](./README.qwen_mcp.md) | [**ตัวจัดการ WSL**](./README.wsl.md) | [**การทดสอบ (E2E)**](./go-diff-packer/E2E_CLI_TESTING.md)
 
 # win-audit-2026 (abcd-setup-server)
 
@@ -67,6 +67,14 @@
 - **รายละเอียด:** ดูคู่มือการใช้งานได้ที่ [**เอกสาร DB MCP Server (ภาษาอังกฤษ)**](./README.db_mcp.md) หรือ [**ภาษาไทย**](./README.db_mcp.th.md)
 - **คู่มือ Qwen Code:** [**วิธีใช้งานกับ Qwen CLI**](./README.qwen_mcp.md)
 
+### 9. Go Diff Packer (`go-diff-packer.exe`)
+- **เปรียบเทียบไดเรกทอรี**: เปรียบเทียบสองโฟลเดอร์และระบุไฟล์ที่สร้างใหม่หรือถูกแก้ไข
+- **การตรวจจับอัจฉริยะ**: ใช้การเปรียบเทียบขนาดไฟล์ก่อน ตามด้วย SHA-256 hash เพื่อความแม่นยำสูงสุด
+- **การสำรองข้อมูลส่วนต่าง**: คัดลอกเฉพาะไฟล์ที่เปลี่ยนแปลงไปยังโฟลเดอร์เอาต์พุตที่เพิ่มขึ้นโดยอัตโนมัติ (`_outdiff_01`, `_outdiff_02`...)
+- **พร้อมสำหรับการปรับใช้ (Deployment)**: เหมาะสำหรับการอัปเดตเฉพาะไฟล์ที่เปลี่ยนแปลงไปยังเซิร์ฟเวอร์จริง
+- **สถิติสรุป**: แสดงจำนวนไฟล์ที่เปรียบเทียบ, คัดลอก, ข้าม และข้อผิดพลาด
+- **รายละเอียด:** ดูคู่มือ [**Go Diff Packer Documentation**](./README.go-diff-packer.md) และ [**คู่มือการใช้งาน (ภาษาอังกฤษ)**](./README.go-diff-packer.usage.md) พร้อม [**คู่มือการทดสอบ E2E**](./go-diff-packer/E2E_CLI_TESTING.md)
+
 ---
 
 ## 🛠️ วิธีการใช้งาน
@@ -89,6 +97,7 @@
 - **เวอร์ชันของคอมไพเลอร์:** **Go 1.21.1** (เป้าหมาย: Windows/AMD64)
 - **การพึ่งพา (Dependencies):** ใช้ WMI และ Windows syscalls สำหรับการตรวจพบข้อมูลระดับสูง
 - **ความเข้ากันได้:** ปรับแต่งมาสำหรับ Windows Server 2016, 2019, 2022 และ Windows 10/11
+- **เครื่องมือที่รวมอยู่:** ข้อมูลระบบ, ตัวรวบรวม XAMPP, ตัวรวบรวมแพตช์, ตัวรวบรวมไฟร์วอลล์, เครื่องมือบีบอัด, ตัวจัดการฐานข้อมูล, ตัวรวบรวมเครื่องมือพัฒนา, Go Diff Packer, DB MCP Server
 
 ---
 

@@ -201,6 +201,7 @@ Done.
 
 ## 🔗 Related Documentation
 
+- [**E2E CLI Testing**](./go-diff-packer/E2E_CLI_TESTING.md) - Automated testing guide for CLI programs
 - [**Usage Guide**](./README.go-diff-packer.usage.md) - Detailed usage examples and tips
 - [**Main README**](./README.md) - Back to main project documentation
 

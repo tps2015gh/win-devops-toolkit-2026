@@ -1,4 +1,4 @@
-🌐 **Languages:** [English] | [**ภาษาไทย (Thai)**](./README.th.md) | [**简体中文 (Chinese)**](./README.zh.md) | [**Archiver Tool**](./README.archiver.md) | [**DB Manager**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) / [**ไทย**](./README.db_mcp.th.md) | [**Qwen MCP Guide**](./README.qwen_mcp.md) | [**WSL Manager**](./README.wsl.md) | [**Go Diff Packer**](./README.go-diff-packer.md) / [**Usage**](./README.go-diff-packer.usage.md)
+🌐 **Languages:** [English] | [**ภาษาไทย (Thai)**](./README.th.md) | [**简体中文 (Chinese)**](./README.zh.md) | [**Archiver Tool**](./README.archiver.md) | [**DB Manager**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) / [**ไทย**](./README.db_mcp.th.md) | [**Qwen MCP Guide**](./README.qwen_mcp.md) | [**WSL Manager**](./README.wsl.md) | [**Go Diff Packer**](./README.go-diff-packer.md) / [**Usage**](./README.go-diff-packer.usage.md) / [**E2E Testing**](./go-diff-packer/E2E_CLI_TESTING.md)
 
 # win-audit-2026 (abcd-setup-server)
 
@@ -65,7 +65,7 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 - **Differential Backup**: Copies only changed files to auto-incrementing output folders (`_outdiff_01`, `_outdiff_02`...).
 - **Deployment Ready**: Perfect for deploying only changed files to production servers.
 - **Summary Statistics**: Shows files compared, copied, skipped, and errors.
-- **Details:** See the [**Go Diff Packer Documentation**](./README.go-diff-packer.md) and [**Usage Guide**](./README.go-diff-packer.usage.md) for full usage instructions.
+- **Details:** See the [**Go Diff Packer Documentation**](./README.go-diff-packer.md), [**Usage Guide**](./README.go-diff-packer.usage.md), and [**E2E Testing Guide**](./go-diff-packer/E2E_CLI_TESTING.md) for full usage instructions.
 
 ### 9. Database MCP Server (`db_mcp_server.exe`)
 - **AI Integration:** Model Context Protocol (MCP) server for AI assistants to query databases directly.

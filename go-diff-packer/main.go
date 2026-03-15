@@ -236,12 +236,15 @@ func main() {
 		if output.Stats.Errors > 0 {
 			fmt.Printf("Errors:         %d\n", output.Stats.Errors)
 		}
+		absOutDir, _ := filepath.Abs(outDir)
+		fmt.Printf("Output path:    %s\n", absOutDir)
 		fmt.Println("Done.")
 	}
 }
 
 func runDeployMode() {
-	fmt.Println("=== Go Diff Packer - Deploy Mode ===\n")
+	fmt.Println("=== Go Diff Packer - Deploy Mode ===")
+	reader := bufio.NewReader(os.Stdin)
 
 	// List all _outdiff folders
 	outDirs, err := listOutDiffDirs()
@@ -250,39 +253,49 @@ func runDeployMode() {
 		os.Exit(1)
 	}
 
-	if len(outDirs) == 0 {
-		fmt.Println("No _outdiff folders found in current directory.")
-		os.Exit(0)
+	var selectedDir string
+
+	for {
+		// Display list
+		fmt.Println("Available output directories:")
+		fmt.Println("-----------------------------")
+		for i, dir := range outDirs {
+			fileCount := countFiles(dir)
+			folderCount := countFolders(dir)
+			fmt.Printf("  %d. %s (%d files, %d folders)\n", i+1, dir, fileCount, folderCount)
+		}
+		fmt.Println("  999. Enter custom folder name")
+		fmt.Println()
+
+		// Get user selection
+		fmt.Print("Select option (or 'q' to quit): ")
+		input, _ := reader.ReadString('\n')
+		input = strings.TrimSpace(input)
+
+		if strings.ToLower(input) == "q" {
+			fmt.Println("Cancelled.")
+			os.Exit(0)
+		}
+
+		if input == "999" {
+			selectedDir = navigateFolders(reader, ".")
+			if selectedDir != "" {
+				break
+			}
+			continue
+		}
+
+		num, err := strconv.Atoi(input)
+		if err != nil || num < 1 || num > len(outDirs) {
+			fmt.Println("Invalid selection.")
+			continue
+		}
+
+		selectedDir = outDirs[num-1]
+		break
 	}
 
-	// Display list
-	fmt.Println("Available output directories:")
-	fmt.Println("-----------------------------")
-	for i, dir := range outDirs {
-		fileCount := countFiles(dir)
-		fmt.Printf("  %d. %s (%d files)\n", i+1, dir, fileCount)
-	}
-	fmt.Println()
-
-	// Get user selection
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Select output folder number (or 'q' to quit): ")
-	input, _ := reader.ReadString('\n')
-	input = strings.TrimSpace(input)
-
-	if strings.ToLower(input) == "q" {
-		fmt.Println("Cancelled.")
-		os.Exit(0)
-	}
-
-	num, err := strconv.Atoi(input)
-	if err != nil || num < 1 || num > len(outDirs) {
-		fmt.Println("Invalid selection.")
-		os.Exit(1)
-	}
-
-	selectedDir := outDirs[num-1]
-	fmt.Printf("\nSelected: %s\n", selectedDir)
+	fmt.Printf("\nSelected source: %s\n", selectedDir)
 
 	// Get destination folder
 	fmt.Print("\nEnter destination folder path: ")
@@ -318,30 +331,29 @@ func runDeployMode() {
 		os.Exit(0)
 	}
 
-	// Check for existing files and ask once for replace confirmation
-	filesToReplace := []string{}
-	filesToCopy := []string{}
-
+	// Check for existing files
+	filesToReplace := 0
 	for _, file := range filesToDeploy {
 		destPath := filepath.Join(destDir, file)
 		if _, err := os.Stat(destPath); err == nil {
-			filesToReplace = append(filesToReplace, file)
-		} else {
-			filesToCopy = append(filesToCopy, file)
+			filesToReplace++
 		}
 	}
 
-	if len(filesToReplace) > 0 {
-		fmt.Printf("\n⚠️  %d file(s) will be replaced:\n", len(filesToReplace))
-		for _, file := range filesToReplace {
-			fmt.Printf("   - %s\n", file)
-		}
-		fmt.Print("\nConfirm replace? (y/n): ")
-		confirm, _ := reader.ReadString('\n')
-		if strings.ToLower(strings.TrimSpace(confirm)) != "y" {
-			fmt.Println("Cancelled.")
-			os.Exit(0)
-		}
+	folderCount := countFolders(selectedDir)
+
+	// Confirmation
+	fmt.Printf("\n--- Confirmation ---\n")
+	fmt.Printf("Source folder:   %s\n", selectedDir)
+	fmt.Printf("Destination:     %s\n", destDir)
+	fmt.Printf("Files to deploy: %d\n", len(filesToDeploy))
+	fmt.Printf("Files to REPLACE:%d\n", filesToReplace)
+	fmt.Printf("Folders in src:  %d\n", folderCount)
+	fmt.Print("\nConfirm deployment? (y/n): ")
+	confirm, _ := reader.ReadString('\n')
+	if strings.ToLower(strings.TrimSpace(confirm)) != "y" {
+		fmt.Println("Cancelled.")
+		os.Exit(0)
 	}
 
 	// Deploy files
@@ -350,14 +362,17 @@ func runDeployMode() {
 	replaced := 0
 	errors := 0
 
-	for _, file := range filesToDeploy {
+	for i, file := range filesToDeploy {
 		srcPath := filepath.Join(selectedDir, file)
 		destPath := filepath.Join(destDir, file)
+
+		// Progress
+		fmt.Printf("\rProgress: [%d/%d] Processing: %s%s", i+1, len(filesToDeploy), file, strings.Repeat(" ", 20))
 
 		// Ensure destination directory exists
 		err := os.MkdirAll(filepath.Dir(destPath), 0755)
 		if err != nil {
-			fmt.Printf("[ERROR] %s: could not create directory: %v\n", file, err)
+			fmt.Printf("\n[ERROR] %s: could not create directory: %v\n", file, err)
 			errors++
 			continue
 		}
@@ -371,28 +386,106 @@ func runDeployMode() {
 		// Copy file
 		err = copyFile(srcPath, destPath)
 		if err != nil {
-			fmt.Printf("[ERROR] %s: copy failed: %v\n", file, err)
+			fmt.Printf("\n[ERROR] %s: copy failed: %v\n", file, err)
 			errors++
 		} else {
 			if isReplace {
-				fmt.Printf("[REPLACE] %s\n", file)
 				replaced++
 			} else {
-				fmt.Printf("[COPY] %s\n", file)
 				copied++
 			}
 		}
 	}
+	fmt.Println() // New line after progress
 
 	// Summary
-	fmt.Println("\n--- Deployment Summary ---")
+	fmt.Println("--- Deployment Summary ---")
 	fmt.Printf("Files copied:   %d\n", copied)
 	fmt.Printf("Files replaced: %d\n", replaced)
 	if errors > 0 {
 		fmt.Printf("Errors:         %d\n", errors)
 	}
 	fmt.Printf("Destination:    %s\n", destDir)
+	absDestDir, _ := filepath.Abs(destDir)
+	fmt.Printf("Full Path:      %s\n", absDestDir)
 	fmt.Println("Done.")
+}
+
+func navigateFolders(reader *bufio.Reader, startDir string) string {
+	currentDir := startDir
+	for {
+		fmt.Printf("\nCurrent folder: %s\n", currentDir)
+		
+		// If startDir is ".", ask for folder name first or show list
+		if currentDir == "." {
+			fmt.Print("Enter folder name (or press Enter to list current directory): ")
+			input, _ := reader.ReadString('\n')
+			input = strings.TrimSpace(input)
+			if input != "" {
+				if _, err := os.Stat(input); err == nil {
+					currentDir = input
+				} else {
+					fmt.Printf("Folder '%s' not found. Listing current directory...\n", input)
+				}
+			}
+		}
+
+		subDirs, err := listSubDirs(currentDir)
+		if err != nil {
+			fmt.Printf("Error listing subdirectories: %v\n", err)
+			return ""
+		}
+
+		fmt.Println("\nSubdirectories:")
+		fmt.Println("-----------------------------")
+		for i, dir := range subDirs {
+			fmt.Printf("  %d. %s\n", i+1, dir)
+		}
+		fmt.Println("  1000. SELECT THIS FOLDER")
+		fmt.Println("  0. Go up one level")
+		fmt.Println("  q. Back to main menu")
+		fmt.Println()
+
+		fmt.Print("Select option: ")
+		input, _ := reader.ReadString('\n')
+		input = strings.TrimSpace(input)
+
+		if strings.ToLower(input) == "q" {
+			return ""
+		}
+
+		if input == "1000" {
+			return currentDir
+		}
+
+		if input == "0" {
+			currentDir = filepath.Dir(currentDir)
+			continue
+		}
+
+		num, err := strconv.Atoi(input)
+		if err == nil && num >= 1 && num <= len(subDirs) {
+			currentDir = filepath.Join(currentDir, subDirs[num-1])
+			continue
+		}
+
+		fmt.Println("Invalid selection.")
+	}
+}
+
+func listSubDirs(dir string) ([]string, error) {
+	var dirs []string
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return nil, err
+	}
+	for _, entry := range entries {
+		if entry.IsDir() && !strings.HasPrefix(entry.Name(), ".") {
+			dirs = append(dirs, entry.Name())
+		}
+	}
+	sort.Strings(dirs)
+	return dirs, nil
 }
 
 func listOutDiffDirs() ([]string, error) {
@@ -439,6 +532,20 @@ func countFiles(dir string) int {
 			return err
 		}
 		if !info.IsDir() {
+			count++
+		}
+		return nil
+	})
+	return count
+}
+
+func countFolders(dir string) int {
+	count := 0
+	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() && path != dir {
 			count++
 		}
 		return nil

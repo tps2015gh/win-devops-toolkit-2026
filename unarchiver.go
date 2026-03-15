@@ -61,6 +61,7 @@ func main() {
 
 	finalPath, _ := filepath.Abs(destFolder)
 	fmt.Printf("\nSuccessfully extracted to:\n%s\n", finalPath)
+	fmt.Printf("Destination Path: %s\n", finalPath)
 	
 	fmt.Println("\nPress Enter to close...")
 	bufio.NewReader(os.Stdin).ReadString('\n')
