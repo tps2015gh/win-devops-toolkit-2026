@@ -68,6 +68,9 @@ func main() {
 
 	root := os.Args[1]
 	absRoot, _ := filepath.Abs(root)
+
+	// Display current vector dimension
+	fmt.Printf("CI3 Searcher initialized with a %d-dimensional vector space.\n", 300)
 	fmt.Printf("Indexing CI3 project at: %s... 0 items indexed", absRoot)
 	var indexedCount int
 	var index []Item
