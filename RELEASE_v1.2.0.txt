@@ -1,0 +1,47 @@
+# Release Post: v1.2.0 - Deploy Navigator & E2E CLI Testing
+
+## Title: v1.2.0 - New Deploy Navigator & E2E CLI Testing Framework
+**Release Number: v1.2.0**
+
+---
+
+### What's New in v1.2.0
+
+This update introduces the **Deploy Navigator** tool and a comprehensive **E2E CLI Testing** framework to the `win-audit-2026` suite, alongside significant UI improvements for the Go Diff Packer.
+
+#### New Tools
+*   **Deploy Navigator (deploy_navigator.exe)**: An interactive CLI tool that allows you to browse your filesystem using numbered menus, select target directories, and manage deployments with ease.
+*   **E2E CLI Testing Guide**: A new framework and documentation for automated testing of CLI applications using Go's reactive I/O.
+
+#### Key Enhancements
+*   **Go Diff Packer (go-diff-packer.exe)**: 
+    *   Added **Full Path Visibility** for output and destination folders.
+    *   New **Folder Counting** feature (recursive) for deployment summaries.
+    *   **Progressive UI** updates to reduce console clutter.
+*   **Unarchiver (unarchiver.exe)**: Now displays the absolute destination path upon successful extraction.
+
+---
+
+### Included Executables
+Download the following portable tools (no installation required):
+1.  deploy_navigator.exe (New!)
+2.  go-diff-packer.exe (Updated)
+3.  unarchiver.exe (Updated)
+4.  system_info.exe
+5.  xampp_collector.exe
+6.  patch_collector.exe
+7.  firewall_collector.exe
+8.  archiver.exe
+9.  db_manager.exe
+10. db_mcp_server.exe
+11. dev_tool_collector.exe
+12. wsl_manager.exe
+
+---
+
+### Quick Start
+1.  Download all .exe files.
+2.  Run deploy_navigator.exe to browse and select deployment targets interactively.
+3.  Use go-diff-packer.exe for high-fidelity directory comparisons and SHA-256 verified deployments.
+
+*Developed with Gemini CLI Assistance - March 15, 2026*

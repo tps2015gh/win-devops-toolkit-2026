@@ -6,12 +6,12 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 
 ---
 
-### 👨‍💻 Author & Intelligent Assistant
-- **Lead Developer & Owner:** **tps2015gh** (Human)
-- **Programming & Testing Team:** tps2015gh, Qwen Code
-- **Intelligent Assistant:** **Qwen Code** (CLI Agent)
+### 👨‍💻 Project Team & Contributors
+- **Director & Supervisor:** **tps2015gh** (Human)
+- **Programming & Testing:** tps2015gh, Qwen Code
+- **Intelligent Assistant (CLI Agent):** Qwen Code
 
-**Legal Note on Authorship:** This project is authored and owned exclusively by **tps2015gh**. Qwen Code acted as a sophisticated development tool and intelligent assistant, providing implementation support and technical suggestions under the direct instruction and oversight of the project owner. All intellectual property, copyright, and final architectural decisions reside with the human author.
+**Legal Note on Authorship:** This project is solely owned and directed by **tps2015gh**. Qwen Code provides intelligent assistance and implementation support under direct instruction and oversight. All intellectual property, copyright, and strategic project decisions are retained by the human author.
 
 ---
 
@@ -67,13 +67,13 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 - **Summary Statistics**: Shows files compared, copied, skipped, and errors.
 - **Details:** See the [**Go Diff Packer Documentation**](./README.go-diff-packer.md), [**Usage Guide**](./README.go-diff-packer.usage.md), and [**E2E Testing Guide**](./go-diff-packer/E2E_CLI_TESTING.md) for full usage instructions.
 
-### 9. Database MCP Server (`db_mcp_server.exe`)
-- **AI Integration:** Model Context Protocol (MCP) server for AI assistants to query databases directly.
-- **Schema Inspection:** List databases, tables, columns, indexes, and foreign keys.
-- **Complex Queries:** Support for WHERE, ORDER BY, GROUP BY, aggregations (COUNT, SUM, AVG, MIN, MAX).
-- **Database Switching:** List available databases and switch between them dynamically.
-- **Read-Only Security:** Only SELECT queries allowed; no write operations.
-- **Details:** See the [**DB MCP Server Documentation**](./README.db_mcp.md) for configuration and usage.
+### 10. CodeIgniter 3 Project Searcher (`ci3_searcher.exe`)
+- **Intelligent Search:** Indexes CodeIgniter 3 project components (Controllers, Models, Views, Config, JS, CSS, Database interactions) and allows for similarity-based search.
+- **50D Vector Space:** Utilizes a 50-dimensional vector space with a simplified attention mechanism for fast and relevant search results.
+- **Component Awareness:** Prioritizes matches based on component type (e.g., searching for "user controller" will prioritize user-related controllers).
+- **Interactive CLI:** Provides an interactive command-line interface for real-time search queries.
+- **Result Export:** Automatically exports extensive search results to a text file.
+- **Details:** See the [**CI3 Searcher Documentation**](./README.ci3_searcher.md) for full usage and technical insights.
 
 ---
 

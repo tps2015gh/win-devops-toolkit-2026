@@ -1,0 +1,5 @@
+ create golang to  scan specify folder that use codeigniter3 to search text  by [ controler , url , database table
+   field , viewname , model , css , js , config  ] and specify 1 then list all relate to that . use attention mechanism
+   50D vector space to search ( like transformer but easier , faster ) . first system will index all (not index git and
+   not index logs , not index binary like pdf ) then after that show prompt user can loop enter search text then relate
+   show. loop until exit with 'q' if large result create text to export data 
