@@ -86,6 +86,6 @@ This weighting scheme allows the search to "pay more attention" to what kind of 
 ## 👨‍💻 Project Team & Contributors
 -   **Director & Supervisor:** **tps2015gh** (Human)
 -   **Programming & Testing:** tps2015gh, Qwen Code
--   **Intelligent Assistant (CLI Agent):** Qwen Code
+-   **Intelligent Assistant (CLI Agent):** Gemini CLI Agent
 
-**Legal Note on Authorship:** This tool was developed under the sole ownership and direction of **tps2015gh**. Qwen Code provided intelligent assistance, implementation, and testing support under direct instruction and oversight. All intellectual property, copyright, and strategic decisions reside with **tps2015gh**.
+**Legal Note on Authorship:** This tool was developed under the sole ownership and direction of **tps2015gh**. Gemini CLI Agent provided intelligent assistance, implementation, and testing support under direct instruction and oversight. All intellectual property, copyright, and strategic decisions reside with **tps2015gh**.

@@ -9,9 +9,9 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 ### 👨‍💻 Project Team & Contributors
 - **Director & Supervisor:** **tps2015gh** (Human)
 - **Programming & Testing:** tps2015gh, Qwen Code
-- **Intelligent Assistant (CLI Agent):** Qwen Code
+- **Intelligent Assistant (CLI Agent):** Gemini CLI Agent
 
-**Legal Note on Authorship:** This project is solely owned and directed by **tps2015gh**. Qwen Code provides intelligent assistance and implementation support under direct instruction and oversight. All intellectual property, copyright, and strategic project decisions are retained by the human author.
+**Legal Note on Authorship:** This project is solely owned and directed by **tps2015gh**. Gemini CLI Agent provides intelligent assistance and implementation support under direct instruction and oversight. All intellectual property, copyright, and strategic project decisions are retained by the human author.
 
 ---
 
