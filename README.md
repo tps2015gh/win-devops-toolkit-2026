@@ -69,7 +69,7 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 
 ### 10. CodeIgniter 3 Project Searcher (`ci3_searcher.exe`)
 - **Intelligent Search:** Indexes CodeIgniter 3 project components (Controllers, Models, Views, Config, JS, CSS, Database interactions) and allows for similarity-based search.
-- **50D Vector Space:** Utilizes a 50-dimensional vector space with a simplified attention mechanism for fast and relevant search results.
+- **100D Vector Space:** Utilizes a 50-dimensional vector space with a simplified attention mechanism for fast and relevant search results.
 - **Component Awareness:** Prioritizes matches based on component type (e.g., searching for "user controller" will prioritize user-related controllers).
 - **Interactive CLI:** Provides an interactive command-line interface for real-time search queries.
 - **Result Export:** Automatically exports extensive search results to a text file.

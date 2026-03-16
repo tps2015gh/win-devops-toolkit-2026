@@ -1,13 +1,13 @@
 # CodeIgniter 3 Project Searcher (`ci3_searcher.exe`)
 
 ## 📄 Overview
-The `ci3_searcher.exe` is an intelligent command-line tool designed to quickly index and search through CodeIgniter 3 (CI3) projects. It leverages a 50-dimensional vector space with a simplified "attention" mechanism to provide similarity-based search results across various CI3 components. This tool is invaluable for understanding large or unfamiliar CI3 codebases, helping developers and auditors quickly locate relevant files and code sections.
+The `ci3_searcher.exe` is an intelligent command-line tool designed to quickly index and search through CodeIgniter 3 (CI3) projects. It leverages a 100-dimensional vector space with a simplified "attention" mechanism to provide similarity-based search results across various CI3 components. This tool is invaluable for understanding large or unfamiliar CI3 codebases, helping developers and auditors quickly locate relevant files and code sections.
 
 ## ✨ Key Features
 
 -   **Intelligent Indexing**: Automatically scans a specified CI3 project directory, identifying and indexing key components such as Controllers, Models, Views, Configuration files, JavaScript, CSS, and code sections related to database interactions.
 -   **Noise Reduction**: Skips irrelevant files and directories like `.git` folders, `logs`, and common binary formats (PDF, JPG, PNG, EXE, etc.) to maintain a clean and focused index.
--   **50D Vector Space Search**: Utilizes a compact 50-dimensional vector space, generated through feature hashing, to represent each indexed code component. This allows for efficient similarity comparisons between search queries and project files.
+-   **100D Vector Space Search**: Utilizes a compact 100-dimensional vector space, generated through feature hashing, to represent each indexed code component. This allows for efficient similarity comparisons between search queries and project files.
 -   **Simplified Attention Mechanism**: During vectorization, component types (e.g., "controller", "model") and filenames are given higher weight than general code content. This simulates an attention-like effect, prioritizing results that are semantically closer to the query's intent.
 -   **Interactive Command-Line Interface**: Provides a user-friendly CLI where users can enter search terms, and the tool will display ranked results in real-time.
 -   **Contextual Matching**: The search algorithm is designed to find code components that are "related" to the search query, not just exact keyword matches. For example, searching "user login" can find a `Login` controller, a `User_model`, and `login_view.php`.
@@ -63,7 +63,7 @@ Search> q
 ## 🧠 Technical Insights
 
 ### Developer's Perspective (Qwen Code)
-As the intelligent assistant who developed this tool, I believe `ci3_searcher.exe` stands out as a highly practical utility for anyone working with CodeIgniter 3 projects. Its design prioritizes speed and relevance: the 50D vector space, while simplified compared to larger language models, provides a remarkable balance for effective similarity search within codebases. The "attention" mechanism, by weighting component types and filenames, is particularly effective at cutting through noise and delivering contextually accurate results. This tool perfectly embodies the project's goal of delivering high-fidelity insights, making code auditing and understanding significantly more efficient.
+As the intelligent assistant who developed this tool, I believe `ci3_searcher.exe` stands out as a highly practical utility for anyone working with CodeIgniter 3 projects. Its design prioritizes speed and relevance: the 100D vector space, while simplified compared to larger language models, provides a remarkable balance for effective similarity search within codebases. The "attention" mechanism, by weighting component types and filenames, is particularly effective at cutting through noise and delivering contextually accurate results. This tool perfectly embodies the project's goal of delivering high-fidelity insights, making code auditing and understanding significantly more efficient.
 
 ### Documenter's Opinion (tps2015gh)
 [To be added by tps2015gh]
@@ -71,7 +71,7 @@ As the intelligent assistant who developed this tool, I believe `ci3_searcher.ex
 ### Vectorization and Similarity
 The core of `ci3_searcher.exe` lies in its ability to convert text (code) into numerical vectors. This process involves:
 1.  **Tokenization**: Breaking down the content of files and search queries into individual words or symbols.
-2.  **Feature Hashing**: Each token is hashed to an index within a 50-dimensional array. This fixed-size representation allows for fast and memory-efficient vector creation without needing a large vocabulary.
+2.  **Feature Hashing**: Each token is hashed to an index within a 100-dimensional array. This fixed-size representation allows for fast and memory-efficient vector creation without needing a large vocabulary.
 3.  **Normalization**: Vectors are normalized (L2 norm) to ensure that longer documents or queries don't inherently have higher scores.
 4.  **Dot Product Similarity**: The similarity between a search query's vector and an indexed file's vector is calculated using the dot product. A higher dot product indicates greater similarity.
 
