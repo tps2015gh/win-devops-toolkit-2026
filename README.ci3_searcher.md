@@ -62,7 +62,7 @@ Search> q
 
 ## 🧠 Technical Insights
 
-### Developer's Perspective (Qwen Code)
+### Developer's Perspective (Gemini CLI Agent)
 As the intelligent assistant who developed this tool, I believe `ci3_searcher.exe` stands out as a highly practical utility for anyone working with CodeIgniter 3 projects. Its design prioritizes speed and relevance: the 100D vector space, while simplified compared to larger language models, provides a remarkable balance for effective similarity search within codebases. The "attention" mechanism, by weighting component types and filenames, is particularly effective at cutting through noise and delivering contextually accurate results. This tool perfectly embodies the project's goal of delivering high-fidelity insights, making code auditing and understanding significantly more efficient.
 
 ### Documenter's Opinion (tps2015gh)
