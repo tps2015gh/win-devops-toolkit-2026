@@ -11,39 +11,39 @@ import (
 	"strings"
 )
 
-type Vector100 [100]float32
+type Vector300 [300]float32
 
 type Item struct {
 	Type     string
 	Name     string
 	Path     string
-	Vector   Vector100
+	Vector   Vector300
 	Metadata string
 }
 
-func (v Vector100) Dot(other Vector100) float32 {
+func (v Vector300) Dot(other Vector300) float32 {
 	var sum float32
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 300; i++ {
 		sum += v[i] * other[i]
 	}
 	return sum
 }
 
-func (v *Vector100) Normalize() {
+func (v *Vector300) Normalize() {
 	var sum float32
 	for _, val := range v {
 		sum += val * val
 	}
 	norm := float32(math.Sqrt(float64(sum)))
 	if norm > 0 {
-		for i := 0; i < 100; i++ {
+		for i := 0; i < 300; i++ {
 			v[i] /= norm
 		}
 	}
 }
 
-func Vectorize(text string, itemType string, name string) Vector100 {
-	var v Vector100
+func Vectorize(text string, itemType string, name string) Vector300 {
+	var v Vector300
 	
 	// Add type and name to content for better weight
 	content := fmt.Sprintf("%s %s %s", itemType, name, text)
@@ -52,7 +52,7 @@ func Vectorize(text string, itemType string, name string) Vector100 {
 	for _, token := range tokens {
 		h := fnv.New32a()
 		h.Write([]byte(token))
-		idx := h.Sum32() % 100
+		idx := h.Sum32() % 300
 		v[idx] += 1.0
 	}
 
