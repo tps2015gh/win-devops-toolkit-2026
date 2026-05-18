@@ -1,0 +1,162 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+)
+
+// IgnorePattern represents a single ignore pattern
+type IgnorePattern struct {
+	Pattern string
+	IsDir   bool
+}
+
+// IgnorePatterns holds all patterns from the ignore config file
+type IgnorePatterns struct {
+	Patterns []IgnorePattern
+}
+
+// LoadIgnorePatterns reads and parses the ignore config file
+func LoadIgnorePatterns(configFile string) (*IgnorePatterns, error) {
+	file, err := os.Open(configFile)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open ignore config file: %w", err)
+	}
+	defer file.Close()
+
+	patterns := &IgnorePatterns{}
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+
+		// Skip empty lines and comments
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+
+		// Check if pattern is for directories (ends with /)
+		isDir := strings.HasSuffix(line, "/")
+		if isDir {
+			line = strings.TrimSuffix(line, "/")
+		}
+
+		patterns.Patterns = append(patterns.Patterns, IgnorePattern{
+			Pattern: line,
+			IsDir:   isDir,
+		})
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("error reading ignore config file: %w", err)
+	}
+
+	return patterns, nil
+}
+
+// ShouldIgnore checks if a path should be ignored
+func (ip *IgnorePatterns) ShouldIgnore(path string, isDir bool) bool {
+	// Convert to forward slashes for consistent comparison
+	path = filepath.ToSlash(path)
+
+	for _, pattern := range ip.Patterns {
+		if matchesPattern(path, pattern.Pattern, isDir || pattern.IsDir) {
+			return true
+		}
+	}
+	return false
+}
+
+// matchesPattern performs glob-style pattern matching
+func matchesPattern(path, pattern string, isDir bool) bool {
+	// Handle exact matches
+	if path == pattern {
+		return true
+	}
+
+	// Handle wildcard patterns
+	if strings.Contains(pattern, "*") {
+		// Convert pattern to regex-like matching
+		parts := strings.Split(pattern, "*")
+		for i, part := range parts {
+			if i == 0 {
+				if !strings.HasPrefix(path, part) {
+					return false
+				}
+			} else if i == len(parts)-1 {
+				if !strings.HasSuffix(path, part) {
+					return false
+				}
+			} else {
+				if !strings.Contains(path, part) {
+					return false
+				}
+			}
+		}
+		return true
+	}
+
+	// Handle directory patterns (e.g., "node_modules/" matches "node_modules/..." paths)
+	if isDir && strings.Contains(path, "/"+pattern+"/") {
+		return true
+	}
+
+	// Check if path starts with pattern (for directory matching)
+	if strings.HasPrefix(path, pattern+"/") {
+		return true
+	}
+
+	return false
+}
+
+// CreateDefaultConfigFile creates a sample ignore config file
+func CreateDefaultConfigFile(configFile string) error {
+	content := `# Archiver Ignore Configuration
+# List folders and patterns to exclude from archiving
+# Use one pattern per line
+# Patterns support wildcards (*)
+# Append / to exclude only directories
+
+# Common directories to ignore
+.git/
+.gitignore
+node_modules/
+__pycache__/
+.env
+.venv/
+venv/
+env/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build artifacts
+bin/
+obj/
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Package manager files
+package-lock.json
+yarn.lock
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+.tmp/
+temp/
+
+# Add your own patterns below:
