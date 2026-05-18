@@ -1,18 +1,19 @@
 ================================================================================
-                    win-audit-2026 v1.1.0 - Complete Audit Suite
-                              Release Notes
+                 win-devops-toolkit-2026 v1.1.0 - Complete DevOps Suite
+                               Release Notes
 ================================================================================
 
 Release Tag: v1.1.0
 Release Date: March 15, 2026
 Previous Release: v1.0.0-db-mcp (March 12, 2026)
+Repository: https://github.com/tps2015gh/win-devops-toolkit-2026
 
 ================================================================================
 🎉 WHAT'S NEW IN v1.1.0
 ================================================================================
 
-This release includes the complete suite of Windows audit and management tools
-built with Go.
+This release includes the complete suite of Windows system discovery, audit,
+and deployment tools built with Go.
 
 NEW IN THIS RELEASE:
 --------------------
@@ -46,7 +47,7 @@ NEW IN THIS RELEASE:
 ================================================================================
 
 1. Download all .exe files from this release
-2. Place them in a folder (e.g., C:\tools\win-audit-2026)
+2. Place them in a folder (e.g., C:\tools\win-devops-toolkit-2026)
 3. Run any tool directly - no installation required!
 
 All tools are portable executables with no dependencies.
@@ -88,35 +89,46 @@ Dev Tools Audit:
 📚 DOCUMENTATION LINKS
 ================================================================================
 
-• Main README:        https://github.com/tps2015gh/win-audit-2026/blob/main/README.md
-• Go Diff Packer:     https://github.com/tps2015gh/win-audit-2026/blob/main/README.go-diff-packer.md
-• Usage Guide:        https://github.com/tps2015gh/win-audit-2026/blob/main/README.go-diff-packer.usage.md
-• DB Manager:         https://github.com/tps2015gh/win-audit-2026/blob/main/README.db.md
-• DB MCP Server:      https://github.com/tps2015gh/win-audit-2026/blob/main/README.db_mcp.md
-• Archiver Tool:      https://github.com/tps2015gh/win-audit-2026/blob/main/README.archiver.md
+• Main README:        https://github.com/tps2015gh/win-devops-toolkit-2026/blob/main/README.md
+• Go Diff Packer:     https://github.com/tps2015gh/win-devops-toolkit-2026/blob/main/README.go-diff-packer.md
+• Usage Guide:        https://github.com/tps2015gh/win-devops-toolkit-2026/blob/main/README.go-diff-packer.usage.md
+• DB Manager:         https://github.com/tps2015gh/win-devops-toolkit-2026/blob/main/README.db.md
+• DB MCP Server:      https://github.com/tps2015gh/win-devops-toolkit-2026/blob/main/README.db_mcp.md
+• Archiver Tool:      https://github.com/tps2015gh/win-devops-toolkit-2026/blob/main/README.archiver.md
 
 ================================================================================
 👨‍💻 AUTHOR & DEVELOPMENT TEAM
 ================================================================================
 
-Lead Developer / Owner:     tps2015gh (Human)
-Programming & Design:       Qwen Code (under supervision of tps2015gh)
-Testing:                    tps2015gh, Qwen Code
-Intelligent Assistant:      Qwen Code (CLI Agent)
+Lead Developer / Owner:        tps2015gh (Human)
+Programming & Design:          Qwen Code (under supervision of tps2015gh)
+DevOps & Architecture:         Claude Haiku 4.5 (AI Assistant)
+Testing:                       tps2015gh, Qwen Code
+Intelligent Assistants:        Qwen Code (CLI Agent), Claude Haiku 4.5 (DevOps & Architecture)
 
 DESIGN & IMPLEMENTATION STATEMENT:
-This program suite was designed and coded by Qwen Code under the supervision,
+This program suite was designed and coded by Qwen Code and enhanced with
+DevOps architecture guidance from Claude Haiku 4.5, under the supervision,
 direction, and instruction of tps2015gh. All feature requirements, architectural
 decisions, code reviews, and final approvals were directed by the human project
-owner. Qwen Code served as an intelligent programming assistant, implementing
-the vision and specifications provided by tps2015gh.
+owner. AI assistants served as intelligent programming and architecture advisors,
+implementing the vision and specifications provided by tps2015gh.
+
+CLAUDE HAIKU 4.5 CONTRIBUTIONS:
+- DevOps toolkit architecture and design patterns
+- CI/CD integration recommendations
+- Code quality and performance optimization advice
+- Infrastructure-as-code workflow planning
+- Deployment strategy and best practices
+- Error handling and resilience patterns
 
 LEGAL NOTE ON AUTHORSHIP:
-This project is authored and owned exclusively by tps2015gh. Qwen Code acted as
-a sophisticated development tool and intelligent assistant, providing
-implementation support, code fixes, and technical suggestions under the direct
-instruction and oversight of the project owner. All intellectual property,
-copyright, and final architectural decisions reside with the human author.
+This project is authored and owned exclusively by tps2015gh. Qwen Code and
+Claude Haiku 4.5 acted as sophisticated development and architecture tools,
+providing implementation support, code fixes, architectural guidance, and
+technical suggestions under the direct instruction and oversight of the project
+owner. All intellectual property, copyright, and final architectural decisions
+reside with the human author.
 
 ================================================================================
 📄 LICENSE
@@ -178,20 +190,20 @@ v1.0.1 (March 08, 2026) - Pre-release
 🔗 GITHUB REPOSITORY
 ================================================================================
 
-Repository:     https://github.com/tps2015gh/win-audit-2026
-Issues:         https://github.com/tps2015gh/win-audit-2026/issues
-Discussions:    https://github.com/tps2015gh/win-audit-2026/discussions
+Repository:     https://github.com/tps2015gh/win-devops-toolkit-2026
+Issues:         https://github.com/tps2015gh/win-devops-toolkit-2026/issues
+Discussions:    https://github.com/tps2015gh/win-devops-toolkit-2026/discussions
 
 ================================================================================
 📧 SUPPORT
 ================================================================================
 
 For questions, issues, or feature requests, please use GitHub Issues:
-https://github.com/tps2015gh/win-audit-2026/issues
+https://github.com/tps2015gh/win-devops-toolkit-2026/issues
 
 ================================================================================
 
 Released: March 15, 2026
-Developed by tps2015gh with Qwen Code Assistance - 2026
+Developed by tps2015gh with Qwen Code and Claude Haiku 4.5 Assistance - 2026
 
 ================================================================================

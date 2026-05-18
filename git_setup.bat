@@ -1,12 +1,12 @@
 @echo off
 set /p username="Enter your GitHub username: "
-set repo_name=win-autit-2026
+set repo_name=win-devops-toolkit-2026
 
 echo.
 echo Checking for existing remote...
 git remote remove origin 2>nul
 
-echo Setting up remote for https://github.com/%username%/%repo_name%.git...
+echo Setting up remote for https://github.com/%%username%%/%%repo_name%%.git...
 git remote add origin https://github.com/%username%/%repo_name%.git
 
 echo.
