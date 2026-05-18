@@ -1,17 +1,18 @@
-🌐 **Languages:** [English] | [**ภาษาไทย (Thai)**](./README.th.md) | [**简体中文 (Chinese)**](./README.zh.md) | [**Archiver Tool**](./README.archiver.md) | [**DB Manager**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) / [**ไทย**](./README.db_mcp.th.md) | [**Qwen MCP Guide**](./README.qwen_mcp.md) | [**WSL Manager**](./README.wsl.md) | [**Go Diff Packer**](./README.go-diff-packer.md) / [**Usage**](./README.go-diff-packer.usage.md) / [**E2E Testing**](./go-diff-packer/E2E_CLI_TESTING.md) / [**Changes v1.2.0**](./SUMMARY_OF_CHANGES_v1.2.0.md)
+🌐 **Languages:** [English] | [**ภาษาไทย (Thai)**](./README.th.md) | [**简体中文 (Chinese)**](./README.zh.md) | [**Archiver Tool**](./README.archiver.md) | [**DB Manager**](./README.db.md) | [**DB MCP Server**](./README.db_mcp.md) | [**ไทย**](./README.th.md) | [**Qwen MCP Guide**](./README.qwen_mcp.md) | [**WSL Manager**](./README.wsl.md) | [**Go Diff Packer**](./README.go-diff-packer.md) | [**Usage**](./README.go-diff-packer.usage.md) | [**E2E Testing**](./go-diff-packer/E2E_CLI_TESTING.md) | [**Changes v1.2.0**](./RELEASE_v1.2.0.txt)
 
-# win-audit-2026 (abcd-setup-server)
+# win-devops-toolkit-2026
 
-A robust Go-based discovery and audit suite for Windows environments. This toolset is designed for system administrators and developers to quickly audit Windows Server/11 instances and XAMPP installations.
+A robust Go-based system discovery, audit, and deployment suite for Windows environments. This comprehensive DevOps toolkit is designed for system administrators and developers to quickly discover Windows Server/11 instances, audit system configurations, manage databases, and orchestrate deployment operations with automated tools.
 
 ---
 
 ### 👨‍💻 Project Team & Contributors
 - **Director & Supervisor:** **tps2015gh** (Human)
 - **Programming & Testing:** tps2015gh, Qwen Code
-- **Intelligent Assistant (CLI Agent):** Gemini CLI Agent
+- **DevOps & Architecture:** Claude Haiku 4.5 (AI Assistant)
+- **Intelligent Assistants:** Qwen Code (CLI Agent), Claude Haiku 4.5 (DevOps & Architecture)
 
-**Legal Note on Authorship:** This project is solely owned and directed by **tps2015gh**. Gemini CLI Agent provides intelligent assistance and implementation support under direct instruction and oversight. All intellectual property, copyright, and strategic project decisions are retained by the human author.
+**Legal Note on Authorship:** This project is solely owned and directed by **tps2015gh**. Qwen Code and Claude Haiku 4.5 provide intelligent assistance, implementation support, and architectural guidance under direct instruction and oversight. All intellectual property and final decisions reside with the human author.
 
 ---
 
@@ -65,15 +66,27 @@ A robust Go-based discovery and audit suite for Windows environments. This tools
 - **Differential Backup**: Copies only changed files to auto-incrementing output folders (`_outdiff_01`, `_outdiff_02`...).
 - **Deployment Ready**: Perfect for deploying only changed files to production servers.
 - **Summary Statistics**: Shows files compared, copied, skipped, and errors.
-- **Details:** See the [**Go Diff Packer Documentation**](./README.go-diff-packer.md), [**Usage Guide**](./README.go-diff-packer.usage.md), and [**E2E Testing Guide**](./go-diff-packer/E2E_CLI_TESTING.md) for full usage instructions.
+- **Details:** See the [**Go Diff Packer Documentation**](./README.go-diff-packer.md), [**Usage Guide**](./README.go-diff-packer.usage.md), and [**E2E Testing Guide**](./go-diff-packer/E2E_CLI_TESTING.md).
+
+### 9. Database MCP Server (`db_mcp_server.exe`)
+- **AI-Ready:** Database access for Claude, ChatGPT, and other AI assistants.
+- **Schema Inspection:** View database structure and relationships.
+- **Complex Queries:** Execute sophisticated SQL queries safely.
+- **Read-Only Mode:** Secure by design with configurable permissions.
+- **Details:** See the [**DB MCP Server Documentation**](./README.db_mcp.md).
 
 ### 10. CodeIgniter 3 Project Searcher (`ci3_searcher.exe`)
 - **Intelligent Search:** Indexes CodeIgniter 3 project components (Controllers, Models, Views, Config, JS, CSS, Database interactions) and allows for similarity-based search.
-- **300D Vector Space:** Utilizes a 50-dimensional vector space with a simplified attention mechanism for fast and relevant search results.
+- **Vector Space Search:** Utilizes vector embeddings with attention mechanism for fast and relevant search results.
 - **Component Awareness:** Prioritizes matches based on component type (e.g., searching for "user controller" will prioritize user-related controllers).
 - **Interactive CLI:** Provides an interactive command-line interface for real-time search queries.
 - **Result Export:** Automatically exports extensive search results to a text file.
 - **Details:** See the [**CI3 Searcher Documentation**](./README.ci3_searcher.md) for full usage and technical insights.
+
+### 11. WSL Manager (`wsl_manager.exe`)
+- **WSL Management:** Discover and manage Windows Subsystem for Linux installations.
+- **Distribution Audit:** List installed Linux distributions and their configurations.
+- **Details:** See the [**WSL Manager Documentation**](./README.wsl.md).
 
 ---
 
@@ -88,7 +101,8 @@ To compile the source code into standalone Windows executables:
 ### Run
 1. Run `system_info.exe` for general system audit.
 2. Run `xampp_collector.exe` for web server discovery.
-3. Check the `./output/` directory for detailed reports.
+3. Run `go-diff-packer.exe` for deployment operations.
+4. Check the `./output/` directory for detailed reports.
 
 ---
 
@@ -97,7 +111,7 @@ To compile the source code into standalone Windows executables:
 - **Compiler Version:** **Go 1.21.1** (Target: Windows/AMD64)
 - **Dependencies:** Uses WMI and Windows syscalls for high-fidelity discovery.
 - **Compatibility:** Optimized for Windows Server 2016, 2019, 2022, and Windows 10/11.
-- **Tools Included:** System Info, XAMPP Collector, Patch Collector, Firewall Collector, Archiver, DB Manager, Dev Tool Collector, Go Diff Packer, DB MCP Server
+- **Tools Included:** System Info, XAMPP Collector, Patch Collector, Firewall Collector, Archiver, DB Manager, Dev Tool Collector, Go Diff Packer, DB MCP Server, CI3 Searcher, WSL Manager
 
 ---
 
@@ -105,4 +119,5 @@ To compile the source code into standalone Windows executables:
 This project is licensed under the **MIT License**. The copyright holder and owner is **tps2015gh**. See the `LICENSE` file for full details.
 
 ---
-*Developed by tps2015gh with Qwen Code Assistance - 2024*
+
+*Developed by tps2015gh with Qwen Code and Claude Haiku 4.5 Assistance - 2026*
